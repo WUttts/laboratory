@@ -123,7 +123,7 @@
   <div class="lyear-login-right">
 
     <div class="lyear-logo text-center">
-      <a href="#!"><h2>高校实验室管理系统</h2></a>
+      <a href=""><h2>高校实验室管理系统</h2></a>
     </div>
     <form id="loginForm">
       <div class="form-group">
@@ -164,6 +164,7 @@
 </div>
 <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.cookie.min.js}"></script>
 <!--消息提示-->
 <script type="text/javascript" th:src="@{/js/bootstrap-notify.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/lightyear.js}"></script>
@@ -171,6 +172,9 @@
 <script th:src="@{https://static.runoob.com/assets/jquery-validation-1.14.0/dist/localization/messages_zh.js}"></script>
 <script type="text/javascript" th:src="@{/js/axios.min.js}"></script>
 <script type="text/javascript">
+    if ($.cookie('token')) {
+        $.removeCookie('token');
+    }
     $().ready(() => {
         $("#loginForm").validate({
             rules: {
@@ -223,12 +227,13 @@
         if (isEmpty("用户名", form.username) || isEmpty("密码", form.password) || isEmpty("验证码", form.captcha)) {
             console.log(form);
         }
-        console.log(form)
+        // console.log(form)
         lightyear.loading('show');
         axios.post("/auth/login", form)
             .then(res => {
-                lightyear.loading('hide')
-                console.log(res)
+                lightyear.loading('hide');
+                $.cookie('token', res.data, {expires: 3, path: '/'});
+                location.href = "/index"
             }).catch(err => {
             lightyear.loading('hide')
             // console.log("err", err.response)
@@ -236,8 +241,9 @@
             $('#captcha').attr('src', '/auth/captcha' + '?' + Math.random())
         })
     })
+
     function isEmpty(key, value) {
-        if (value == null || value == undefined || value === "") {
+        if (value === null || value === undefined || value === "") {
             lightyear.notify('请输入' + key, 'danger', 100);
             return true;
         }

@@ -9,28 +9,27 @@ import javax.persistence.Table;
 import java.io.Serializable;
 
 /**
- * @author wutangsheng
- * @create 2021-02-10 22:50
- * @info
+ * 角色和菜单关联表
+ * @author wts
  */
-@Data
 @Entity
+@Data
 @Table(name = "sys_role_menu")
 public class SysRoleMenu implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 角色id
+     * 角色ID
      */
     @Id
-    @Column(length = 11)
+    @Column(name = "role_id", nullable = false)
     private Long roleId;
 
     /**
-     * 菜单id
+     * 菜单ID
      */
-    @Column(length = 11)
+    @Column(name = "menu_id", nullable = false)
     private Long menuId;
 
 }

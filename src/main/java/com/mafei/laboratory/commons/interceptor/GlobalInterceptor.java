@@ -1,11 +1,17 @@
 package com.mafei.laboratory.commons.interceptor;
 
 import com.mafei.laboratory.commons.exception.BadRequestException;
+import com.mafei.laboratory.commons.utils.JwtUtils;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -18,24 +24,41 @@ import javax.servlet.http.HttpServletResponse;
 public class GlobalInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        // TODO 验证token,部分接口不拦截，例如登录接口等
-        String token = request.getHeader("token");
-        System.out.println(token);
-        if (!StringUtils.hasText(token)) {
-            //跳转
-            response.sendRedirect("/login");
+        // 验证token,部分接口不拦截，例如登录接口等
+        String token = "";
+        Cookie[] cookies = request.getCookies();
+        for (Cookie cookie : cookies) {
+            if (!StringUtils.isEmpty(cookie.getName()) && "token".equalsIgnoreCase(cookie.getName())) {
+                token = cookie.getValue();
+                break;
+            }
+        }
+        if (isLogin(token)) {
+            response.setStatus(HttpStatus.OK.value());
             return true;
         }
+        //跳转
+        response.setStatus(HttpStatus.FORBIDDEN.value());
+        response.sendRedirect("/login");
         return false;
     }
 
-    @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) {
-
-    }
-
-    @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
-
+    /**
+     * 判断是否登录
+     *
+     * @param token
+     * @return
+     */
+    private boolean isLogin(String token) {
+        if (StringUtils.isEmpty(token)) {
+            return false;
+        }
+        try {
+            JwtUtils.verifyToken(token);
+        } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | IllegalArgumentException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 }

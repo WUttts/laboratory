@@ -1,22 +1,24 @@
 package com.mafei.laboratory.system.controller;
 
 import com.mafei.laboratory.commons.exception.BadRequestException;
-import com.mafei.laboratory.system.entity.dto.UserDto;
+import com.mafei.laboratory.commons.utils.JwtUtils;
+import com.mafei.laboratory.system.entity.vo.LoginUserVo;
+import com.mafei.laboratory.system.service.SysMenuService;
+import com.mafei.laboratory.system.service.SysUserService;
+import com.mafei.laboratory.system.service.dto.UserDto;
 import com.wf.captcha.ArithmeticCaptcha;
 import com.wf.captcha.utils.CaptchaUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Locale;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author wutangsheng
@@ -29,12 +31,13 @@ import java.util.Locale;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
+    private final SysUserService userService;
+    private final SysMenuService menuService;
+
     private String verCode;
 
-
     @PostMapping("/login")
-    public ResponseEntity<Object> login(@Validated @RequestBody UserDto authUser, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        System.out.println(authUser);
+    public ResponseEntity<Object> login(@Validated @RequestBody UserDto authUser, HttpServletRequest request) throws Exception {
         String code = authUser.getCaptcha();
         // 判断验证码
         if (StringUtils.isBlank(code) || StringUtils.isEmpty(code)) {
@@ -45,13 +48,17 @@ public class AuthController {
             CaptchaUtil.clear(request);
             throw new BadRequestException("验证码错误");
         }
-
         // todo 验证账号密码
-
+        LoginUserVo user = userService.queryByUsername(authUser);
         // todo 生成token
+        Map<String, Object> map = new HashMap<>(3);
+        map.put("user", user.getUserName());
+        map.put("avatar", user.getAvatar());
+        map.put("roleId", user.getRoleId());
 
-
-        return ResponseEntity.ok("ok");
+        String token = JwtUtils.createToken(map);
+        //返回菜单
+        return ResponseEntity.ok(token);
     }
 
     /**

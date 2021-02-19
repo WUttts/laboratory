@@ -1,16 +1,13 @@
 package com.mafei.laboratory.commons.exception;
 
-import com.mafei.laboratory.commons.utils.ThrowableUtil;
+import com.mafei.laboratory.commons.utils.ThrowableUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
-
-import java.util.Objects;
 
 /**
  * @author wutangsheng
@@ -26,7 +23,7 @@ public class GlobalException {
     @ExceptionHandler(Throwable.class)
     public ResponseEntity<ApiError> handleException(Throwable e) {
         // 打印堆栈信息
-        log.error(ThrowableUtil.getStackTrace(e));
+        log.error(ThrowableUtils.getStackTrace(e));
         return buildResponseEntity(ApiError.error(e.getMessage()));
     }
 
@@ -37,7 +34,7 @@ public class GlobalException {
     public ResponseEntity<ApiError> badRequestException(
             BadRequestException e) {
         // 打印堆栈信息
-        log.error(ThrowableUtil.getStackTrace(e));
+        log.error(ThrowableUtils.getStackTrace(e));
         return buildResponseEntity(ApiError.error(e.getStatus(), e.getMessage()));
     }
 
@@ -47,7 +44,7 @@ public class GlobalException {
     @ExceptionHandler(value = EntityExistException.class)
     public ResponseEntity<ApiError> entityExistException(EntityExistException e) {
         // 打印堆栈信息
-        log.error(ThrowableUtil.getStackTrace(e));
+        log.error(ThrowableUtils.getStackTrace(e));
         return buildResponseEntity(ApiError.error(e.getMessage()));
     }
 
@@ -57,7 +54,7 @@ public class GlobalException {
     @ExceptionHandler(value = EntityNotFoundException.class)
     public ResponseEntity<ApiError> entityNotFoundException(EntityNotFoundException e) {
         // 打印堆栈信息
-        log.error(ThrowableUtil.getStackTrace(e));
+        log.error(ThrowableUtils.getStackTrace(e));
         return buildResponseEntity(ApiError.error(NOT_FOUND.value(), e.getMessage()));
     }
 

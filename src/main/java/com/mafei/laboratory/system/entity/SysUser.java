@@ -1,112 +1,106 @@
 package com.mafei.laboratory.system.entity;
 
 import lombok.Data;
-import java.util.Date;
-import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.GeneratedValue;
 
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
- * @author wutangsheng
- * @create 2021-02-10 16:51
- * @info
+ * 用户信息表
+ * @author wts
  */
-
 @Entity
 @Data
-@Table(name="sys_user")
+@Table(name = "sys_user")
 public class SysUser implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue
     /**
-     * 用户id
+     * 用户ID
      */
-    @Column(name = "user_id",length = 20)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id", nullable = false)
     private Long userId;
 
     /**
-     * 部门id
+     * 部门ID
      */
-    @Column(name = "dept_id",length = 20)
+    @Column(name = "dept_id")
     private Long deptId;
 
     /**
      * 登录账号
      */
-    @Column(name = "login_name",length = 30)
+    @Column(name = "login_name", nullable = false)
     private String loginName;
 
     /**
      * 用户昵称
      */
-    @Column(name = "user_name",length = 30)
+    @Column(name = "user_name")
     private String userName;
 
     /**
      * 用户类型（00系统用户 01注册用户）
      */
-    @Column(name = "user_type" ,length = 2)
+    @Column(name = "user_type")
     private String userType;
 
     /**
      * 用户邮箱
      */
-    @Column(name = "email",length = 50)
+    @Column(name = "email")
     private String email;
 
     /**
      * 手机号码
      */
-    @Column(name = "phonenumber" ,length = 11)
-    private Integer phonenumber;
+    @Column(name = "phonenumber")
+    private String phonenumber;
 
     /**
      * 用户性别（0男 1女 2未知）
      */
-    @Column(name = "sex",length = 1)
+    @Column(name = "sex")
     private String sex;
 
     /**
      * 头像路径
      */
-    @Column(name = "avatar",length = 100)
+    @Column(name = "avatar",columnDefinition = "VARCHAR(100) default https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png")
     private String avatar;
 
     /**
      * 密码
      */
-    @Column(name = "password",length = 50)
+    @Column(name = "password")
     private String password;
 
     /**
      * 盐加密
      */
-    @Column(name = "salt",length = 20)
+    @Column(name = "salt")
     private String salt;
 
     /**
      * 帐号状态（0正常 1停用）
      */
-    @Column(name = "status",length = 1)
-    private Integer status;
+    @Column(name = "status")
+    private String status;
 
     /**
      * 删除标志（0代表存在 2代表删除）
      */
-    @Column(name = "del_flag",length = 1)
-    private Integer delFlag;
+    @Column(name = "del_flag")
+    private String delFlag;
 
     /**
-     * 最后登录ip
+     * 最后登录IP
      */
-    @Column(name = "login_ip",length = 50)
+    @Column(name = "login_ip")
     private String loginIp;
 
     /**
@@ -124,7 +118,7 @@ public class SysUser implements Serializable {
     /**
      * 创建者
      */
-    @Column(name = "create_by",length = 50)
+    @Column(name = "create_by")
     private String createBy;
 
     /**
@@ -136,7 +130,7 @@ public class SysUser implements Serializable {
     /**
      * 更新者
      */
-    @Column(name = "update_by",length = 50)
+    @Column(name = "update_by")
     private String updateBy;
 
     /**
@@ -152,4 +146,3 @@ public class SysUser implements Serializable {
     private String remark;
 
 }
-

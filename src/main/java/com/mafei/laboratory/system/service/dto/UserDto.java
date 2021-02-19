@@ -1,4 +1,4 @@
-package com.mafei.laboratory.system.entity.dto;
+package com.mafei.laboratory.system.service.dto;
 
 import lombok.Getter;
 import lombok.Setter;

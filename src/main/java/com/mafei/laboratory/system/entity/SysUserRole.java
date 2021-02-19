@@ -6,30 +6,27 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
- * @author wutangsheng
- * @create 2021-02-10 22:31
- * @info
+ * 用户和角色关联表
+ * @author wts
  */
 @Entity
-@Data
 @Table(name = "sys_user_role")
+@Data
 public class SysUserRole implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 用户id
+     * 用户ID
      */
     @Id
-    @GeneratedValue
-    @Column(name = "user_id", length = 11)
+    @Column(name = "user_id", nullable = false)
     private Long userId;
 
     /**
-     * 角色id
+     * 角色ID
      */
-    @Column(name = "role_id", length = 11)
+    @Column(name = "role_id", nullable = false)
     private Long roleId;
-
 
 }

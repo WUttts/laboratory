@@ -1,93 +1,94 @@
 package com.mafei.laboratory.system.entity;
 
-import java.io.Serializable;
-
 import lombok.Data;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
- * @author wutangsheng
- * @create 2021-02-10 22:45
- * @info
+ * 角色信息表
+ * @author wts
  */
-@Data
-@Entity
 @Table(name = "sys_role")
+@Entity
+@Data
 public class SysRole implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 角色id
+     * 角色ID
      */
     @Id
-    @GeneratedValue
-    @Column(length = 11)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "role_id", nullable = false)
     private Long roleId;
 
     /**
      * 角色名称
      */
-    @Column(length = 64)
+    @Column(name = "role_name", nullable = false)
     private String roleName;
 
     /**
      * 角色权限字符串
      */
-    @Column(length = 100)
+    @Column(name = "role_key", nullable = false)
     private String roleKey;
 
     /**
      * 显示顺序
      */
-    @Column(length = 4)
+    @Column(name = "role_sort", nullable = false)
     private Integer roleSort;
 
     /**
      * 数据范围（1：全部数据权限 2：自定数据权限 3：本部门数据权限 4：本部门及以下数据权限）
      */
-    @Column(length = 1)
-    private Integer dataScope;
+    @Column(name = "data_scope")
+    private String dataScope;
 
     /**
      * 角色状态（0正常 1停用）
      */
-    @Column(length = 1)
-    private Integer status;
+    @Column(name = "status", nullable = false)
+    private String status;
 
     /**
      * 删除标志（0代表存在 2代表删除）
      */
-    @Column(length = 1)
-    private Integer delFlag;
+    @Column(name = "del_flag")
+    private String delFlag;
 
     /**
      * 创建者
      */
-    @Column(length = 64)
+    @Column(name = "create_by")
     private String createBy;
 
     /**
      * 创建时间
      */
+    @Column(name = "create_time")
     private Date createTime;
 
     /**
      * 更新者
      */
-    @Column(length = 64)
+    @Column(name = "update_by")
     private String updateBy;
 
     /**
      * 更新时间
      */
+    @Column(name = "update_time")
     private Date updateTime;
 
     /**
      * 备注
      */
+    @Column(name = "remark")
     private String remark;
 
 }

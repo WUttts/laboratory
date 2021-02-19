@@ -22,14 +22,13 @@ public class InterceptorConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         InterceptorRegistration addInterceptor = registry.addInterceptor(globalInterceptor);
+        addInterceptor.addPathPatterns("/**");
         addInterceptor.addPathPatterns("/api/**");
-        addInterceptor.addPathPatterns("/error");
         addInterceptor.addPathPatterns("/index");
-        addInterceptor.addPathPatterns("/main");
-        addInterceptor.addPathPatterns("/page/**");
         // 排除配置
         addInterceptor.excludePathPatterns("/auth/**");
         addInterceptor.excludePathPatterns("/login");
+        addInterceptor.excludePathPatterns("/logout");
         addInterceptor.excludePathPatterns("/register");
         addInterceptor.excludePathPatterns("/js/**");
         addInterceptor.excludePathPatterns("/css/**");

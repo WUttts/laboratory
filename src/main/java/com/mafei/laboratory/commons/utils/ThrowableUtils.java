@@ -8,7 +8,7 @@ import java.io.StringWriter;
  * @create 2021-02-10 21:18
  * @info
  */
-public class ThrowableUtil {
+public class ThrowableUtils {
 
     /**
      * 获取堆栈信息

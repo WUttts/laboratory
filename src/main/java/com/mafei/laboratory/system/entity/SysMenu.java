@@ -2,114 +2,117 @@ package com.mafei.laboratory.system.entity;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
 /**
- * @author wutangsheng
- * @create 2021-02-10 22:37
- * @info
+ * 菜单权限表
+ * @author wts
  */
 @Entity
-@Data
 @Table(name = "sys_menu")
+@Data
 public class SysMenu implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * 菜单ID
+     */
     @Id
-    @Column(name = "menu_id", length = 11)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "menu_id", nullable = false)
     private Long menuId;
 
     /**
      * 菜单名称
      */
-    @Column(length = 50)
+    @Column(name = "menu_name", nullable = false)
     private String menuName;
 
     /**
-     * 父菜单id
+     * 父菜单ID
      */
-    @Column(length = 20)
+    @Column(name = "parent_id")
     private Long parentId;
 
     /**
      * 显示顺序
      */
-    @Column(length = 4)
+    @Column(name = "order_num")
     private Integer orderNum;
 
     /**
      * 请求地址
      */
+    @Column(name = "url")
     private String url;
 
     /**
-     * 打开方式（menuitem页签 menublank新窗口）
+     * 打开方式（menuItem页签 menuBlank新窗口）
      */
-    @Column(length = 20)
+    @Column(name = "target")
     private String target;
 
     /**
-     * 菜单类型（m目录 c菜单 f按钮）
+     * 菜单类型（M目录 C菜单 F按钮）
      */
-    @Column(length = 1)
+    @Column(name = "menu_type")
     private String menuType;
 
     /**
      * 菜单状态（0显示 1隐藏）
      */
-    @Column(length = 1)
-    private Integer visible;
+    @Column(name = "visible")
+    private String visible;
 
     /**
      * 是否刷新（0刷新 1不刷新）
      */
-    @Column(length = 1)
-    private Integer isRefresh;
+    @Column(name = "is_refresh")
+    private Boolean refresh;
 
     /**
      * 权限标识
      */
-    @Column(length = 100)
+    @Column(name = "perms")
     private String perms;
 
     /**
      * 菜单图标
      */
-    @Column(length = 100)
+    @Column(name = "icon")
     private String icon;
 
     /**
      * 创建者
      */
-    @Column(length = 64)
+    @Column(name = "create_by")
     private String createBy;
 
     /**
      * 创建时间
      */
+    @Column(name = "create_time")
     private Date createTime;
 
     /**
      * 更新者
      */
-    @Column(length = 64)
+    @Column(name = "update_by")
     private String updateBy;
 
     /**
      * 更新时间
      */
+    @Column(name = "update_time")
     private Date updateTime;
 
     /**
      * 备注
      */
-    @Column(length = 510)
+    @Column(name = "remark")
     private String remark;
 
 }
