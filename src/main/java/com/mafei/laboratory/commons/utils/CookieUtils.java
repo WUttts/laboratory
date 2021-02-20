@@ -38,15 +38,13 @@ public class CookieUtils {
 
     public static Cookie getCookie(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
-        if (cookieNotExist(cookies)) {
-            return null;
-        }
+        Cookie c = null;
         for (Cookie cookie : cookies) {
             if (!StringUtils.isEmpty(cookie.getName()) && "token".equalsIgnoreCase(cookie.getName())) {
-                return cookie;
+                c = cookie;
             }
         }
-        return null;
+        return c;
     }
 
     /**

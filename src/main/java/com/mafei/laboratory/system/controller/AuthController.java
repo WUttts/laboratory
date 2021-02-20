@@ -3,9 +3,8 @@ package com.mafei.laboratory.system.controller;
 import com.mafei.laboratory.commons.exception.BadRequestException;
 import com.mafei.laboratory.commons.utils.JwtUtils;
 import com.mafei.laboratory.system.entity.vo.LoginUserVo;
-import com.mafei.laboratory.system.service.SysMenuService;
 import com.mafei.laboratory.system.service.SysUserService;
-import com.mafei.laboratory.system.service.dto.UserDto;
+import com.mafei.laboratory.system.service.dto.LoginDto;
 import com.wf.captcha.ArithmeticCaptcha;
 import com.wf.captcha.utils.CaptchaUtil;
 import lombok.RequiredArgsConstructor;
@@ -32,12 +31,11 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class AuthController {
     private final SysUserService userService;
-    private final SysMenuService menuService;
 
     private String verCode;
 
     @PostMapping("/login")
-    public ResponseEntity<Object> login(@Validated @RequestBody UserDto authUser, HttpServletRequest request) throws Exception {
+    public ResponseEntity<Object> login(@Validated @RequestBody LoginDto authUser, HttpServletRequest request) throws Exception {
         String code = authUser.getCaptcha();
         // 判断验证码
         if (StringUtils.isBlank(code) || StringUtils.isEmpty(code)) {
@@ -51,9 +49,8 @@ public class AuthController {
         // todo 验证账号密码
         LoginUserVo user = userService.queryByUsername(authUser);
         // todo 生成token
-        Map<String, Object> map = new HashMap<>(3);
-        map.put("user", user.getUserName());
-        map.put("avatar", user.getAvatar());
+        Map<String, Object> map = new HashMap<>(4);
+        map.put("userId", user.getUserId());
         map.put("roleId", user.getRoleId());
 
         String token = JwtUtils.createToken(map);

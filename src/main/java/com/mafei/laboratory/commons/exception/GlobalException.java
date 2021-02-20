@@ -28,11 +28,20 @@ public class GlobalException {
     }
 
     /**
+     * 处理token异常
+     *
+     * @return
+     */
+    public ResponseEntity<ApiError> noPermissionException() {
+        return null;
+    }
+
+
+    /**
      * 处理自定义异常
      */
     @ExceptionHandler(value = BadRequestException.class)
-    public ResponseEntity<ApiError> badRequestException(
-            BadRequestException e) {
+    public ResponseEntity<ApiError> badRequestException(BadRequestException e) {
         // 打印堆栈信息
         log.error(ThrowableUtils.getStackTrace(e));
         return buildResponseEntity(ApiError.error(e.getStatus(), e.getMessage()));

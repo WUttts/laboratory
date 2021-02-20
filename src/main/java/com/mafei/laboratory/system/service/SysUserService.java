@@ -2,9 +2,12 @@ package com.mafei.laboratory.system.service;
 
 import com.mafei.laboratory.system.entity.SysUser;
 import com.mafei.laboratory.system.entity.vo.LoginUserVo;
+import com.mafei.laboratory.system.entity.vo.UserVo;
+import com.mafei.laboratory.system.service.dto.LoginDto;
 import com.mafei.laboratory.system.service.dto.UserDto;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * 用户信息表(SysUser)表服务接口
@@ -19,7 +22,7 @@ public interface SysUserService {
      * @param userDto
      * @return
      */
-    LoginUserVo queryByUsername(UserDto userDto);
+    LoginUserVo queryByUsername(LoginDto userDto);
 
     /**
      * 通过ID查询单条数据
@@ -44,7 +47,7 @@ public interface SysUserService {
      * @param sysUser 实例对象
      * @return 实例对象
      */
-    SysUser insert(SysUser sysUser);
+    void insert(UserDto sysUser);
 
     /**
      * 修改数据
@@ -52,7 +55,14 @@ public interface SysUserService {
      * @param sysUser 实例对象
      * @return 实例对象
      */
-    SysUser update(SysUser sysUser);
+    void update(UserDto sysUser);
+
+    /**
+     * 批量更新
+     * @param status
+     * @param ids
+     */
+    void updateStatus(String status, Set<Long> ids);
 
     /**
      * 通过主键删除数据
@@ -61,5 +71,20 @@ public interface SysUserService {
      * @return 是否成功
      */
     boolean deleteById(Long userId);
+
+    /**
+     * 批量删除
+     *
+     * @param userId 主键
+     * @return 是否成功
+     */
+    void deleteByIds(Set<Long> userId);
+
+    /**
+     * 查询多条数据
+     *
+     * @return 对象列表
+     */
+    List<UserVo> queryAll();
 
 }

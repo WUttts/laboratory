@@ -13,7 +13,8 @@
         <div class="card-body">
 
           <div class="edit-avatar">
-            <img th:src="@{/images/users/avatar.jpg}" alt="..." class="img-avatar">
+            <img th:src="@{${avatar}}" alt="..."
+                 class="img-avatar">
             <div class="avatar-divider"></div>
             <div class="edit-avatar-content">
               <button class="btn btn-default">修改头像</button>
@@ -23,18 +24,19 @@
           <hr>
           <form method="post" action="#!" class="site-form">
             <div class="form-group">
-              <label for="username">用户名</label>
-              <input type="text" class="form-control" name="username" id="username" value="lightyear"
+              <label for="username">账号</label>
+              <input type="text" class="form-control" name="username" id="username" th:value="${loginName}"
                      disabled="disabled"/>
             </div>
             <div class="form-group">
-              <label for="nickname">昵称</label>
-              <input type="text" class="form-control" name="nickname" id="nickname" placeholder="输入您的昵称" value="笔下光年">
+              <label for="nickname">用户名</label>
+              <input type="text" class="form-control" name="nickname" id="nickname" placeholder="输入您的昵称"
+                     th:value="${userName}">
             </div>
             <div class="form-group">
               <label for="email">邮箱</label>
               <input type="email" class="form-control" name="email" id="email" aria-describedby="emailHelp"
-                     placeholder="请输入正确的邮箱地址" value="3331653644@qq.com">
+                     placeholder="请输入正确的邮箱地址" th:value="${email}">
               <small id="emailHelp" class="form-text text-muted">请保证您填写的邮箱地址是正确的。</small>
             </div>
             <div class="form-group">

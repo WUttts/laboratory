@@ -1,24 +1,22 @@
-package com.mafei.laboratory.system.service.dto;
+package com.mafei.laboratory.system.entity.vo;
 
 import lombok.Data;
 
-import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 /**
  * @author wutangsheng
- * @create 2021-02-20 20:14
+ * @create 2021-02-20 14:08
  * @info
  */
 @Data
-public class UserDto {
+public class UserVo {
     private Long userId;
-    @NotNull
     private String loginName;
-    @NotNull
     private String userName;
-    @NotNull
     private String email;
     private String phonenumber;
     private String sex;
     private String status;
+    private Date loginDate;
 }

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
@@ -16,7 +17,7 @@ import java.util.Set;
  * @author wts
  */
 @Repository
-public interface SysUserRepository extends JpaRepository<SysUser, Long>, JpaSpecificationExecutor<SysUser> {
+public interface SysUserRepository extends JpaRepository<SysUser, Long>, JpaSpecificationExecutor<SysUser>, CrudRepository<SysUser, Long> {
 
     /**
      * 通过id查找用户
@@ -24,7 +25,7 @@ public interface SysUserRepository extends JpaRepository<SysUser, Long>, JpaSpec
      * @param id
      * @return user
      */
-    SysUser findSysUserByUserId(Long id);
+    SysUser findByUserId(Long id);
 
 
     /**
@@ -60,6 +61,15 @@ public interface SysUserRepository extends JpaRepository<SysUser, Long>, JpaSpec
     SysUser findByPhonenumber(String phone);
 
     /**
+     * 根据id删除
+     *
+     * @param userId
+     * @return
+     */
+    SysUser deleteByUserId(Long userId);
+
+
+    /**
      * 修改密码
      *
      * @param username              用户名
@@ -69,6 +79,7 @@ public interface SysUserRepository extends JpaRepository<SysUser, Long>, JpaSpec
     @Modifying
     @Query(value = "update sys_user set password = ?2 , pwd_reset_time = ?3 where username = ?1", nativeQuery = true)
     void updatePass(String username, String pass, Date lastPasswordResetTime);
+
 
     /**
      * 修改邮箱
@@ -130,14 +141,14 @@ public interface SysUserRepository extends JpaRepository<SysUser, Long>, JpaSpec
     int countByDepts(Set<Long> deptIds);
 
     /**
-     * 根据角色查询
+     * 根据id查询多个
      *
      * @param ids /
      * @return /
      */
-    @Query(value = "SELECT count(1) FROM sys_user u, sys_users_roles r WHERE " +
-            "u.user_id = r.user_id AND r.role_id in ?1", nativeQuery = true)
-    int countByRoles(Set<Long> ids);
+    @Query(value = "SELECT * FROM sys_user WHERE " +
+            "user_id in ?1", nativeQuery = true)
+    List<SysUser> queryByIds(Set<Long> ids);
 
     /**
      * 查询角色名
@@ -147,6 +158,15 @@ public interface SysUserRepository extends JpaRepository<SysUser, Long>, JpaSpec
      */
     @Query(value = "SELECT r.role_id FROM " +
             "sys_user u,sys_user_role sr,sys_role r " +
-            "WHERE u.user_id = ?1 AND u.user_id = sr.user_id AND r.role_id = sr.role_id",nativeQuery = true)
+            "WHERE u.user_id = ?1 AND u.user_id = sr.user_id AND r.role_id = sr.role_id", nativeQuery = true)
     Long queryRoleId(Long userId);
+
+    /**
+     * 批量删除
+     *
+     * @param ids
+     */
+    @Modifying
+    @Query(value = "delete from sys_user where userId in ?1", nativeQuery = true)
+    void deleteByUserIds(Set<Long> ids);
 }

@@ -1,6 +1,5 @@
 package com.mafei.laboratory.commons.interceptor;
 
-import com.mafei.laboratory.commons.exception.BadRequestException;
 import com.mafei.laboratory.commons.utils.JwtUtils;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
@@ -9,8 +8,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.ModelAndView;
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,6 +24,11 @@ public class GlobalInterceptor implements HandlerInterceptor {
         // 验证token,部分接口不拦截，例如登录接口等
         String token = "";
         Cookie[] cookies = request.getCookies();
+        if (cookies == null || cookies.length == 0) {
+            response.setStatus(HttpStatus.FORBIDDEN.value());
+            response.sendRedirect("/login");
+            return false;
+        }
         for (Cookie cookie : cookies) {
             if (!StringUtils.isEmpty(cookie.getName()) && "token".equalsIgnoreCase(cookie.getName())) {
                 token = cookie.getValue();

@@ -2,7 +2,7 @@ package com.mafei.laboratory.system.service.impl;
 
 import com.mafei.laboratory.system.entity.vo.LoginUserVo;
 import com.mafei.laboratory.system.service.SysUserService;
-import com.mafei.laboratory.system.service.dto.UserDto;
+import com.mafei.laboratory.system.service.dto.LoginDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,7 +21,7 @@ class UserServiceImplTest {
 
     @Test
     void queryByUsername() {
-        UserDto userDto = new UserDto();
+        LoginDto userDto = new LoginDto();
         userDto.setUsername("admin");
         userDto.setPassword("123456");
         userDto.setCaptcha("1");
