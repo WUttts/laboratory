@@ -38,8 +38,13 @@
               <input type="text" name="phonenumber" class="form-control" id="phonenumber">
             </div>
             <div class="form-group">
-              <label for="sex" class="control-label">性别：</label>
-              <input type="text" name="sex" class="form-control" id="sex">
+              <label class="lyear-radio radio-inline radio-primary">
+                <input type="radio" checked="" name="sex" value="0"><span>男</span>
+              </label>
+              <label class="lyear-radio radio-inline radio-primary">
+                <input type="radio" name="sex" value="1"><span>女</span>
+              </label>
+            </div>
             </div>
             <div class="form-group">
               <div class="example-box">
@@ -217,11 +222,11 @@
           }),
 
               $('#addBtn').click(() => {
-
                   $('#exampleModal').on('show.bs.modal', function (event) {
                       var modal = $(this)
                       modal.find('.modal-title').text('新增用户');
                   })
+                  
                   $('#exampleModal').modal();
                   $('#updateBtn').click(() => {
                       let form = $("#updateForm").serializeObject();
