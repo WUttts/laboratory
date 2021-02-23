@@ -46,9 +46,9 @@ public class AuthController {
             CaptchaUtil.clear(request);
             throw new BadRequestException("验证码错误");
         }
-        // todo 验证账号密码
+        // 验证数据库里的账号密码是否正确
         LoginUserVo user = userService.queryByUsername(authUser);
-        // todo 生成token
+        // todo 构造token所需要的数据
         Map<String, Object> map = new HashMap<>(4);
         map.put("userId", user.getUserId());
         map.put("roleId", user.getRoleId());

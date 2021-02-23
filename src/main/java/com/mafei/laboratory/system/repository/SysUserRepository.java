@@ -167,6 +167,6 @@ public interface SysUserRepository extends JpaRepository<SysUser, Long>, JpaSpec
      * @param ids
      */
     @Modifying
-    @Query(value = "delete from sys_user where userId in ?1", nativeQuery = true)
+    @Query(value = "delete from sys_user where user_id in ?1", nativeQuery = true)
     void deleteByUserIds(Set<Long> ids);
 }

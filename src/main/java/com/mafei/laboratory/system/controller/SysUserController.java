@@ -2,6 +2,7 @@ package com.mafei.laboratory.system.controller;
 
 import com.mafei.laboratory.commons.exception.BadRequestException;
 import com.mafei.laboratory.system.entity.SysUser;
+import com.mafei.laboratory.system.entity.vo.UserVo;
 import com.mafei.laboratory.system.service.SysUserService;
 import com.mafei.laboratory.system.service.dto.LoginDto;
 import com.mafei.laboratory.system.service.dto.UserDto;
@@ -12,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -41,7 +43,8 @@ public class SysUserController {
 
     @GetMapping
     public ResponseEntity<Object> getAll() {
-        return ResponseEntity.ok(sysUserService.queryAll());
+        List<UserVo> userVoList = sysUserService.queryAll();
+        return ResponseEntity.ok(userVoList);
     }
 
     /**

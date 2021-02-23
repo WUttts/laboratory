@@ -25,6 +25,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
         addInterceptor.addPathPatterns("/**");
 //        addInterceptor.addPathPatterns("/api/**");
         addInterceptor.addPathPatterns("/index");
+
         // 排除配置
         addInterceptor.excludePathPatterns("/auth/**");
         addInterceptor.excludePathPatterns("/api/**");

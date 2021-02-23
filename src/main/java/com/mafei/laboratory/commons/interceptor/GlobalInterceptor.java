@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,10 +37,11 @@ public class GlobalInterceptor implements HandlerInterceptor {
             }
         }
         if (isLogin(token)) {
+            System.out.println(token);
             response.setStatus(HttpStatus.OK.value());
             return true;
         }
-        //跳转
+        //如果token不合法，就返回403状态，并重新将页面定向到登录页
         response.setStatus(HttpStatus.FORBIDDEN.value());
         response.sendRedirect("/login");
         return false;

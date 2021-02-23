@@ -15,7 +15,7 @@ import java.util.UUID;
 /**
  * @author wutangsheng
  * @create 2021-02-10 21:32
- * @info JWT token
+ * @info JWT token jjwt
  */
 public class JwtUtils {
     /**

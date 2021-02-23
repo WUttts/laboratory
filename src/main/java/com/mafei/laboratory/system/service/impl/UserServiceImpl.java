@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -22,6 +23,7 @@ import java.util.Set;
  * @info
  */
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class UserServiceImpl implements SysUserService {
     private final SysUserRepository userRepository;

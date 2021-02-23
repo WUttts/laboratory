@@ -232,7 +232,7 @@
         axios.post("/auth/login", form)
             .then(res => {
                 lightyear.loading('hide');
-                $.cookie('token', res.data, {expires: 3, path: '/'});
+                $.cookie('token', res.data, {expires: 3, path: '/'});//
                 location.href = "/index"
             }).catch(err => {
             lightyear.loading('hide')
