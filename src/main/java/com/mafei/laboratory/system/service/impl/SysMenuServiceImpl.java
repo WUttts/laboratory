@@ -2,18 +2,20 @@ package com.mafei.laboratory.system.service.impl;
 
 import com.mafei.laboratory.commons.exception.BadRequestException;
 import com.mafei.laboratory.system.entity.SysMenu;
+import com.mafei.laboratory.system.entity.SysUser;
+import com.mafei.laboratory.system.entity.vo.AllMenuVo;
 import com.mafei.laboratory.system.entity.vo.MenuVo;
 import com.mafei.laboratory.system.repository.SysMenuRepository;
 import com.mafei.laboratory.system.repository.SysRoleMenuRepository;
 import com.mafei.laboratory.system.service.SysMenuService;
+import com.mafei.laboratory.system.service.dto.AllMenuDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import javax.transaction.Transactional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -22,6 +24,7 @@ import java.util.stream.Collectors;
  * @info
  */
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class SysMenuServiceImpl implements SysMenuService {
     private final SysMenuRepository menuRepository;
@@ -29,8 +32,11 @@ public class SysMenuServiceImpl implements SysMenuService {
 
 
     @Override
-    public SysMenu queryById(Long menuId) {
-        return null;
+    public AllMenuVo queryById(Long menuId) {
+        SysMenu sysMenu = menuRepository.findByMenuId(menuId);
+        AllMenuVo allMenuVo = new AllMenuVo();
+        BeanUtils.copyProperties(sysMenu, allMenuVo);
+        return allMenuVo;
     }
 
     @Override
@@ -39,18 +45,60 @@ public class SysMenuServiceImpl implements SysMenuService {
     }
 
     @Override
-    public SysMenu insert(SysMenu sysMenu) {
-        return null;
+    public Integer insert(AllMenuVo sysMenu) {
+        SysMenu menu = new SysMenu();
+        BeanUtils.copyProperties(sysMenu, menu);
+        menuRepository.save(menu);
+        return 1;
     }
 
     @Override
-    public SysMenu update(SysMenu sysMenu) {
-        return null;
+    public Integer update(AllMenuDto sysMenu) {
+        try {
+            SysMenu menu = menuRepository.findByMenuId(sysMenu.getMenuId());
+            menu.setParentId(sysMenu.getParentId());
+            menu.setMenuName(sysMenu.getMenuName());
+            menu.setOrderNum(sysMenu.getOrderNum());
+            menu.setUrl(sysMenu.getUrl());
+            menu.setTarget(sysMenu.getTarget());
+            menu.setVisible(sysMenu.getVisible());
+            menu.setIcon(sysMenu.getIcon());
+            menu.setRemark(sysMenu.getRemark());
+
+            menuRepository.save(menu);
+            return 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 
     @Override
-    public boolean deleteById(Long menuId) {
-        return false;
+    public void updateStatus(String status, Set<Long> ids) {
+        try {
+            List<SysMenu> list = menuRepository.queryByIds(ids);
+            for (SysMenu menu : list) {
+                menu.setVisible(status);
+            }
+            menuRepository.saveAll(list);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public Integer deleteById(Long menuId) {
+        menuRepository.deleteByMenuId(menuId);
+        return 1;
+    }
+
+    @Override
+    public void deleteByIds(Set<Long> ids) {
+        try {
+            menuRepository.deleteByIds(ids);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -70,6 +118,18 @@ public class SysMenuServiceImpl implements SysMenuService {
         findChildMenu(menus, rootMenu);
 
         return rootMenu;
+    }
+
+    @Override
+    public List<AllMenuVo> getAllMenu() {
+        List<SysMenu> all = menuRepository.findAll();
+        LinkedList<AllMenuVo> allMenuVos = new LinkedList<>();
+        for (SysMenu sysMenu : all) {
+            AllMenuVo allMenuVo = new AllMenuVo();
+            BeanUtils.copyProperties(sysMenu, allMenuVo);
+            allMenuVos.add(allMenuVo);
+        }
+        return allMenuVos;
     }
 
     private void findChildMenu(List<SysMenu> menuList, List<MenuVo> menuVoList) {

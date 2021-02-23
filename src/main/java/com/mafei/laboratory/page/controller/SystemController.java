@@ -54,4 +54,13 @@ public class SystemController {
         return prefix + "/changePwd";
     }
 
+    @GetMapping("/role")
+    public String role() {
+        return prefix + "/role";
+    }
+
+    @GetMapping("/menu")
+    public String menu() {
+        return prefix + "/menu";
+    }
 }

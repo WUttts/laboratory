@@ -1,10 +1,13 @@
 package com.mafei.laboratory.system.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.mafei.laboratory.commons.exception.BadRequestException;
 import com.mafei.laboratory.system.entity.SysUser;
 import com.mafei.laboratory.system.entity.vo.UserVo;
 import com.mafei.laboratory.system.service.SysUserService;
 import com.mafei.laboratory.system.service.dto.LoginDto;
+import com.mafei.laboratory.system.service.dto.UpdateStatusDto;
 import com.mafei.laboratory.system.service.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,9 +83,8 @@ public class SysUserController {
     }
 
     @PatchMapping
-    public void patchStatus(String status, @RequestBody Set<Long> ids) {
-        sysUserService.updateStatus(status, ids);
+    public void patchStatus(@RequestBody UpdateStatusDto json) {
+        sysUserService.updateStatus(json.getStatus(), json.getIds());
     }
-
 
 }

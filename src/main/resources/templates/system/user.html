@@ -179,6 +179,13 @@
             return obj;
         }
 
+        function getStatusJson(status, ids) {
+            let data = {};
+            data.status = status;
+            data.ids = ids;
+            return data
+        }
+
         $('#table').bootstrapTable({
             url: '/api/user',                                     // 通过url 获取数据
             showRefresh: true,                                    // 是否刷新按钮
@@ -317,23 +324,39 @@
 
             $('#enableBtn').click(() => {
                 if (idData.length === 0) {
-                    lightyear.notify('请先选择要启用的用户', 'danger', 100);
+                    lightyear.notify('请先选择要启用的用户', 'warning', 100);
                     return;
                 }
-                lightyear.notify('启用成功', 'success', 100);
+
+                let json = getStatusJson('0', idData);
+                axios.patch('/api/user', json).then(res => {
+                    idData = [];
+                    lightyear.notify('启用成功', 'success', 100);
+                }).catch(err => {
+                    lightyear.notify('启用失败' + err.response.data.message, 'danger', 100);
+                })
             }),
 
             $('#disableBtn').click(() => {
                 if (idData.length === 0) {
-                    lightyear.notify('请先选择要禁用的用户', 'danger', 100);
+                    lightyear.notify('请先选择要启用的用户', 'warning', 100);
                     return;
                 }
-                lightyear.notify('禁用成功', 'success', 100);
+
+                let json = getStatusJson('1', idData);
+                console.log(json);
+                axios.patch('/api/user', json).then(res => {
+                    idData = [];
+                    lightyear.notify('禁用成功', 'success', 100);
+                }).catch(err => {
+                    console.log(err.response);
+                    lightyear.notify('禁用失败' + err.response.data.message, 'danger', 100);
+                })
             }),
 
             $('#delBtn').click(() => {
                 if (idData.length === 0) {
-                    lightyear.notify('请先选择要删除的用户', 'danger', 100);
+                    lightyear.notify('请先选择要删除的用户', 'warning', 100);
                     return;
                 }
                 axios({
@@ -341,11 +364,13 @@
                     url: '/api/user',
                     data: idData
                 }).then(res => {
+                    idData = [];
                     lightyear.notify('删除成功', 'success', 100);
                 }).catch(err => {
                     lightyear.notify('删除失败' + err.response.message, 'danger', 100);
                 });
             })
+
     });
 </script>
 </body>

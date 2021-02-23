@@ -1,9 +1,12 @@
 package com.mafei.laboratory.system.service;
 
 import com.mafei.laboratory.system.entity.SysMenu;
+import com.mafei.laboratory.system.entity.vo.AllMenuVo;
 import com.mafei.laboratory.system.entity.vo.MenuVo;
+import com.mafei.laboratory.system.service.dto.AllMenuDto;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * 菜单权限表(SysMenu)表服务接口
@@ -20,7 +23,7 @@ public interface SysMenuService {
      * @param menuId 主键
      * @return 实例对象
      */
-    SysMenu queryById(Long menuId);
+    AllMenuVo queryById(Long menuId);
 
     /**
      * 查询多条数据
@@ -34,18 +37,10 @@ public interface SysMenuService {
     /**
      * 新增数据
      *
-     * @param sysMenu 实例对象
+     * @param menuVo 实例对象
      * @return 实例对象
      */
-    SysMenu insert(SysMenu sysMenu);
-
-    /**
-     * 修改数据
-     *
-     * @param sysMenu 实例对象
-     * @return 实例对象
-     */
-    SysMenu update(SysMenu sysMenu);
+    Integer insert(AllMenuVo menuVo);
 
     /**
      * 通过主键删除数据
@@ -53,10 +48,34 @@ public interface SysMenuService {
      * @param menuId 主键
      * @return 是否成功
      */
-    boolean deleteById(Long menuId);
+    Integer deleteById(Long menuId);
 
     /**
-     * 根据id查询菜单
+     * 批量删除
+     *
+     * @param userId 主键
+     * @return 是否成功
+     */
+    void deleteByIds(Set<Long> userId);
+
+    /**
+     * 修改数据
+     *
+     * @param sysMenu 实例对象
+     * @return 实例对象
+     */
+    Integer update(AllMenuDto sysMenu);
+
+    /**
+     * 批量更新状态
+     * @param status
+     * @param ids
+     */
+    void updateStatus(String status, Set<Long> ids);
+
+
+    /**
+     * 根据角色id查询菜单
      *
      * @param roleId
      * @return
@@ -64,4 +83,10 @@ public interface SysMenuService {
     List<MenuVo> queryMenuByRole(Long roleId);
 
 
+    /**
+     * 获取全部菜单
+     *
+     * @return
+     */
+    List<AllMenuVo> getAllMenu();
 }

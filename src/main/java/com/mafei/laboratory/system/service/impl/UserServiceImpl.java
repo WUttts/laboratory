@@ -10,6 +10,7 @@ import com.mafei.laboratory.system.service.dto.LoginDto;
 import com.mafei.laboratory.system.service.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -27,6 +28,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class UserServiceImpl implements SysUserService {
     private final SysUserRepository userRepository;
+    private final String status = "1";
 
     @Override
     public LoginUserVo queryByUsername(LoginDto userDto) {
@@ -40,8 +42,11 @@ public class UserServiceImpl implements SysUserService {
             throw new BadRequestException("用户名或密码错误");
         }
 
-        LoginUserVo loginUserVo = new LoginUserVo();
+        if (status.equals(user.getStatus())) {
+            throw new BadRequestException(HttpStatus.FORBIDDEN, "该账号已停用");
+        }
 
+        LoginUserVo loginUserVo = new LoginUserVo();
         //复制类
         BeanUtils.copyProperties(user, loginUserVo);
         loginUserVo.setRoleId(roleId);
@@ -85,20 +90,23 @@ public class UserServiceImpl implements SysUserService {
     @Override
     public void updateStatus(String status, Set<Long> ids) {
         try {
+            if (ids.contains(1)) {
+                ids.remove(1);
+            }
             List<SysUser> list = userRepository.queryByIds(ids);
             for (SysUser user : list) {
                 user.setStatus(status);
             }
             userRepository.saveAll(list);
-        } catch (BadRequestException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
 
     @Override
-    public boolean deleteById(Long userId) {
-        Integer i = userRepository.deleteByUserId(userId);
+    public boolean deleteById(Long id) {
+        Integer i = userRepository.deleteByUserId(id);
         return i == 0;
     }
 
