@@ -37,7 +37,6 @@ public class GlobalInterceptor implements HandlerInterceptor {
             }
         }
         if (isLogin(token)) {
-            System.out.println(token);
             response.setStatus(HttpStatus.OK.value());
             return true;
         }

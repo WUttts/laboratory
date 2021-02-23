@@ -66,7 +66,7 @@ public interface SysUserRepository extends JpaRepository<SysUser, Long>, JpaSpec
      * @param userId
      * @return
      */
-    SysUser deleteByUserId(Long userId);
+    Integer deleteByUserId(Long userId);
 
 
     /**

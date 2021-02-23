@@ -98,8 +98,8 @@ public class UserServiceImpl implements SysUserService {
 
     @Override
     public boolean deleteById(Long userId) {
-        SysUser user = userRepository.deleteByUserId(userId);
-        return user == null;
+        Integer i = userRepository.deleteByUserId(userId);
+        return i == 0;
     }
 
     @Override

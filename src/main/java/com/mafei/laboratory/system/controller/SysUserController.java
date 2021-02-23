@@ -53,7 +53,7 @@ public class SysUserController {
      * @param id
      * @return
      */
-    @DeleteMapping(value = "{/id}")
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity<Object> deleteOne(@PathVariable("id") Long id) {
         boolean b = sysUserService.deleteById(id);
         if (b) {

@@ -22,12 +22,12 @@ import java.util.Map;
  * @info
  */
 @Controller
-@RequestMapping("/user")
-public class UserController {
+@RequestMapping("/system")
+public class SystemController {
     @Autowired
     private SysUserService userService;
 
-    private String prefix = "user";
+    private String prefix = "system";
 
     @GetMapping("/user")
     public String user() {
