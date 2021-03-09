@@ -105,9 +105,6 @@ public class SysMenuServiceImpl implements SysMenuService {
     public List<MenuVo> queryMenuByRole(Long roleId) {
         List<Long> menuIds = sysRoleMenuRepository.findByRoleId(roleId);
         List<SysMenu> menus = menuRepository.findMenu(menuIds);
-        if (menus.size() == 0) {
-            throw new BadRequestException(HttpStatus.NOT_FOUND, "当前无菜单");
-        }
         //查询父节点菜单
         List<MenuVo> rootMenu = menus.stream()
                 .filter(menu -> menu.getParentId() == 0)

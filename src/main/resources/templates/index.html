@@ -35,6 +35,12 @@
             <li class="nav-item active" th:if="${roleId} eq '1'">
               <a class="multitabs" th:href="@{/main}"><i class="mdi mdi-home"></i> <span>首页</span></a>
             </li>
+            <li class="nav-item active" th:if="${roleId} eq '2'">
+              <a class="multitabs" th:href="@{/tMain}"><i class="mdi mdi-home"></i> <span>借用设备</span></a>
+            </li>
+            <li class="nav-item active" th:if="${roleId} eq '3'">
+              <a class="multitabs" th:href="@{/sMain}"><i class="mdi mdi-home"></i> <span>借用设备</span></a>
+            </li>
             <li class="nav-item nav-item-has-subnav" th:each="menu : ${menus}">
               <a href="javascript:void(0)"><i th:class="${menu.icon}"></i> <span th:text="${menu.menuName}">一级菜单</span></a>
               <ul class="nav nav-subnav">
@@ -42,12 +48,16 @@
                   <a th:if="${#lists.isEmpty(cmenu.children)}"
                      th:href="@{${cmenu.url}}"
                      th:text="${cmenu.menuName}"
-                      class="multitabs">二级菜单</a>
+                     class="multitabs">二级菜单</a>
                 </li>
               </ul>
             </li>
             <li class="nav-item" th:if="${roleId} eq '1'">
               <a class="multitabs" th:href="@{/message}"><i class="mdi mdi-comment-check"></i> <span>通知公告管理</span></a>
+            </li>
+            <li class="nav-item" th:if="${roleId} eq '2'">
+              <a class="multitabs" th:href="@{/tLaboratory}"><i class="mdi mdi-comment-check"></i>
+                <span>借用实验室</span></a>
             </li>
           </ul>
         </nav>
@@ -81,9 +91,9 @@
               </a>
               <ul class="dropdown-menu dropdown-menu-right">
                 <li>
-                  <a class="multitabs" data-url="/user/userinfo" href="javascript:void(0)">
+                  <a class="multitabs" data-url="/system/userinfo" href="javascript:void(0)">
                     <i class="mdi mdi-account"></i> 个人信息</a></li>
-                <li><a class="multitabs" data-url="/user/changePwd" href="javascript:void(0)"><i
+                <li><a class="multitabs" data-url="/system/changePwd" href="javascript:void(0)"><i
                     class="mdi mdi-lock-outline"></i> 修改密码</a></li>
                 <li class="divider"></li>
                 <li><a th:href="@{/login}"><i class="mdi mdi-logout-variant"></i> 退出登录</a></li>

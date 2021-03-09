@@ -1,13 +1,12 @@
 package com.mafei.laboratory.commons.utils;
 
-import com.mafei.laboratory.system.security.TokenProperties;
+import com.mafei.laboratory.commons.security.TokenProperties;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 
 import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
 import java.security.Key;
-import java.util.Base64;
 import java.util.Date;
 import java.util.Map;
 import java.util.UUID;

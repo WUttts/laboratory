@@ -71,5 +71,4 @@ public class SysMenuController {
     public void patchStatus(@RequestBody UpdateStatusDto json) {
         menuService.updateStatus(json.getStatus(), json.getIds());
     }
-
 }

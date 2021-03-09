@@ -27,7 +27,7 @@ public class SystemController {
     @Autowired
     private SysUserService userService;
 
-    private String prefix = "system";
+    private final String prefix = "system";
 
     @GetMapping("/user")
     public String user() {

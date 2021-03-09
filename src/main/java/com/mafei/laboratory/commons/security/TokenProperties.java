@@ -1,9 +1,8 @@
-package com.mafei.laboratory.system.security;
+package com.mafei.laboratory.commons.security;
 
 import lombok.Data;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
 /**
  * @author wutangsheng

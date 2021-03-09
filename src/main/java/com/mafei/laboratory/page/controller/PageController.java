@@ -40,7 +40,7 @@ public class PageController {
         }
         String token = cookie.getValue();
         Map<String, Object> map = JwtUtils.parseToken(token);
-        Long roleId = Long.valueOf(String.valueOf(map.get("roleId")));
+        Long roleId = Long. valueOf(String.valueOf(map.get("roleId")));
         Long userId = Long.valueOf(String.valueOf(map.get("userId")));
         SysUser user = userService.queryById(userId);
         model.addAttribute("avatar", user.getAvatar());

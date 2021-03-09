@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <th:block th:include="include :: header('用户管理')"/>
+  <th:block th:include="include :: header('实验室信息')"/>
   <link th:href="@{/js/bootstrap-table/bootstrap-table.min.css}" rel="stylesheet"/>
 </head>
 <body>
@@ -140,7 +140,7 @@
         </div>
         <div class="card-body">
           <div class="table-responsive">
-            <!--            表格数据-->
+            <!-- 表格数据 -->
             <table id="table"></table>
           </div>
         </div>
@@ -304,22 +304,11 @@
         }),
 
             $('#addBtn').click(() => {
-                $('#addModal').on('show.bs.modal', function (event) {
-                    var modal = $(this)
-                    modal.find('.modal-title').text('新增用户');
-                })
-
-                $('#addModal').modal();
-                $('#sureBtn').click(() => {
-                    let form = $("#addForm").serializeObject();
-                    console.log(form);
-                    axios.post('/api/user', form).then(res => {
-                        lightyear.notify(res.data, 'success', 100);
-                        $('#addModal').modal('hide');
-                    }).catch(err => {
-                        lightyear.notify(err.response.data.message, 'danger', 100);
-                    })
-                })
+                parent.$(parent.document).data('multitabs').create({
+                    iframe: true,                                // 指定为iframe模式，当值为false的时候，为智能模式，自动判断（内网用ajax，外网用iframe）。缺省为false。
+                    title: '信息导入',                     // 标题（可选），没有则显示网址
+                    url: '/laboratory/import'                    // 链接（必须），如为外链，强制为info页
+                }, true);
             }),
 
             $('#enableBtn').click(() => {
