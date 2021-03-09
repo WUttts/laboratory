@@ -24,4 +24,14 @@ public class ProcessController {
     public String returnLog() {
         return prefix + "/returnLog";
     }
+
+    @GetMapping("/checkLaboratory")
+    public String checkLaboratory() {
+        return prefix + "/checkLaboratory";
+    }
+
+    @GetMapping("/checkApp")
+    public String checkApparatus() {
+        return prefix + "/checkApp";
+    }
 }

@@ -40,7 +40,7 @@ public class PageController {
         }
         String token = cookie.getValue();
         Map<String, Object> map = JwtUtils.parseToken(token);
-        Long roleId = Long. valueOf(String.valueOf(map.get("roleId")));
+        Long roleId = Long.valueOf(String.valueOf(map.get("roleId")));
         Long userId = Long.valueOf(String.valueOf(map.get("userId")));
         SysUser user = userService.queryById(userId);
         model.addAttribute("avatar", user.getAvatar());
@@ -83,7 +83,19 @@ public class PageController {
     }
 
     @GetMapping("/main")
-    public String main() {
+    public String main(HttpServletRequest request) {
+        Cookie cookie = CookieUtils.getCookie(request);
+        if (cookie == null) {
+            throw new BadRequestException(HttpStatus.FORBIDDEN, "token失效，请重新登录");
+        }
+        String token = cookie.getValue();
+        Map<String, Object> map = JwtUtils.parseToken(token);
+        long roleId = Long.parseLong(String.valueOf(map.get("roleId")));
+        if (roleId == 2) {
+            return "teacher_main";
+        } else if (roleId == 3) {
+            return "student_main";
+        }
         return "lyear_main";
     }
 }

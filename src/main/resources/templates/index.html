@@ -32,14 +32,8 @@
 
         <nav class="sidebar-main">
           <ul class="nav nav-drawer">
-            <li class="nav-item active" th:if="${roleId} eq '1'">
+            <li class="nav-item active">
               <a class="multitabs" th:href="@{/main}"><i class="mdi mdi-home"></i> <span>首页</span></a>
-            </li>
-            <li class="nav-item active" th:if="${roleId} eq '2'">
-              <a class="multitabs" th:href="@{/tMain}"><i class="mdi mdi-home"></i> <span>借用设备</span></a>
-            </li>
-            <li class="nav-item active" th:if="${roleId} eq '3'">
-              <a class="multitabs" th:href="@{/sMain}"><i class="mdi mdi-home"></i> <span>借用设备</span></a>
             </li>
             <li class="nav-item nav-item-has-subnav" th:each="menu : ${menus}">
               <a href="javascript:void(0)"><i th:class="${menu.icon}"></i> <span th:text="${menu.menuName}">一级菜单</span></a>
@@ -54,10 +48,6 @@
             </li>
             <li class="nav-item" th:if="${roleId} eq '1'">
               <a class="multitabs" th:href="@{/message}"><i class="mdi mdi-comment-check"></i> <span>通知公告管理</span></a>
-            </li>
-            <li class="nav-item" th:if="${roleId} eq '2'">
-              <a class="multitabs" th:href="@{/tLaboratory}"><i class="mdi mdi-comment-check"></i>
-                <span>借用实验室</span></a>
             </li>
           </ul>
         </nav>
