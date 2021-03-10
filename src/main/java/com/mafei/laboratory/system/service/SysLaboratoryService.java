@@ -1,8 +1,13 @@
 package com.mafei.laboratory.system.service;
 
 import com.mafei.laboratory.system.entity.SysLaboratory;
+import com.mafei.laboratory.system.entity.SysRole;
+import com.mafei.laboratory.system.entity.vo.LaboratoryVo;
+import com.mafei.laboratory.system.entity.vo.RoleVo;
+import com.mafei.laboratory.system.service.dto.LaboratoryDto;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * 实验室信息表(SysLaboratory)表服务接口
@@ -11,6 +16,17 @@ import java.util.List;
  * @since 2021-02-24 10:39:21
  */
 public interface SysLaboratoryService {
+    /**
+     * 查询全部
+     * @return
+     */
+    List<LaboratoryDto> findAll();
+
+    /**
+     * 查询全部
+     * @return
+     */
+    List<SysLaboratory> findAllByStatus();
 
     /**
      * 通过ID查询单条数据
@@ -21,29 +37,12 @@ public interface SysLaboratoryService {
     SysLaboratory queryById(Long id);
 
     /**
-     * 查询多条数据
-     *
-     * @param offset 查询起始位置
-     * @param limit  查询条数
-     * @return 对象列表
-     */
-    List<SysLaboratory> queryAllByLimit(int offset, int limit);
-
-    /**
      * 新增数据
      *
-     * @param sysLaboratory 实例对象
+     * @param laboratoryVo 实例对象
      * @return 实例对象
      */
-    SysLaboratory insert(SysLaboratory sysLaboratory);
-
-    /**
-     * 修改数据
-     *
-     * @param sysLaboratory 实例对象
-     * @return 实例对象
-     */
-    SysLaboratory update(SysLaboratory sysLaboratory);
+    void insert(LaboratoryVo laboratoryVo);
 
     /**
      * 通过主键删除数据
@@ -51,6 +50,29 @@ public interface SysLaboratoryService {
      * @param id 主键
      * @return 是否成功
      */
-    boolean deleteById(Long id);
+    void deleteById(Long id);
 
+
+    /**
+     * 批量删除
+     *
+     * @param ids 主键
+     * @return 是否成功
+     */
+    void deleteByIds(Set<Long> ids);
+
+    /**
+     * 修改数据
+     *
+     * @param laboratoryVo 实例对象
+     * @return 实例对象
+     */
+    void update(LaboratoryVo laboratoryVo);
+
+    /**
+     * 批量更新状态
+     * @param status
+     * @param ids
+     */
+    void updateStatus(String status, Set<Long> ids);
 }

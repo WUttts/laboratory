@@ -18,34 +18,20 @@
         <div class="modal-body">
           <form id="updateForm">
             <div class="form-group">
-              <label for="loginName" class="control-label">ID：</label>
-              <input type="text" name="userId" class="form-control" id="userId" disabled="disabled">
+              <label for="id" class="control-label">ID：</label>
+              <input type="text" name="id" class="form-control" id="id" disabled="disabled">
             </div>
             <div class="form-group">
-              <label for="loginName" class="control-label">账号：</label>
-              <input type="text" name="loginName" class="form-control" id="loginName" disabled="disabled">
+              <label for="laboratoryName" class="control-label">实验室名称：</label>
+              <input type="text" name="laboratoryName" class="form-control" id="laboratoryName">
             </div>
             <div class="form-group">
-              <label for="userName" class="control-label">用户名：</label>
-              <input type="text" name="userName" class="form-control" id="userName">
+              <label for="capacity" class="control-label">容纳人数：</label>
+              <input type="number" name="capacity" class="form-control" id="capacity">
             </div>
             <div class="form-group">
-              <label for="email" class="control-label">邮箱：</label>
-              <input type="text" name="email" class="form-control" id="email">
-            </div>
-            <div class="form-group">
-              <label for="phonenumber" class="control-label">手机号：</label>
-              <input type="text" name="phonenumber" class="form-control" id="phonenumber">
-            </div>
-            <div class="form-group">
-              <div class="example-box">
-                <label class="lyear-radio radio-inline radio-primary">
-                  <input type="radio" checked="" name="sex" value="0"><span>男</span>
-                </label>
-                <label class="lyear-radio radio-inline radio-primary">
-                  <input type="radio" name="sex" value="1"><span>女</span>
-                </label>
-              </div>
+              <label for="target" class="control-label">实验类型：</label>
+              <input type="text" name="target" class="form-control" id="target">
             </div>
             <div class="form-group">
               <div class="example-box">
@@ -66,67 +52,6 @@
       </div>
     </div>
   </div>
-  <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-              aria-hidden="true">&times;</span>
-          </button>
-          <h4 class="modal-title" id="addModalLabel">新增用户</h4>
-        </div>
-        <div class="modal-body">
-          <form id="addForm">
-            <div class="form-group">
-              <label for="loginName" class="control-label">账号：</label>
-              <input type="text" name="loginName" class="form-control">
-            </div>
-            <div class="form-group">
-              <label for="password" class="control-label">密码：</label>
-              <input type="text" name="password" id="password" class="form-control">
-            </div>
-            <div class="form-group">
-              <label for="userName" class="control-label">用户名：</label>
-              <input type="text" name="userName" class="form-control">
-            </div>
-            <div class="form-group">
-              <label for="email" class="control-label">邮箱：</label>
-              <input type="text" name="email" class="form-control">
-            </div>
-            <div class="form-group">
-              <label for="phonenumber" class="control-label">手机号：</label>
-              <input type="text" name="phonenumber" class="form-control">
-            </div>
-            <div class="form-group">
-              <div class="example-box">
-                <label class="lyear-radio radio-inline radio-primary">
-                  <input type="radio" checked="" name="sex" value="0"><span>男</span>
-                </label>
-                <label class="lyear-radio radio-inline radio-primary">
-                  <input type="radio" name="sex" value="1"><span>女</span>
-                </label>
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="example-box">
-                <label class="lyear-radio radio-inline radio-primary">
-                  <input type="radio" checked="" name="status" value="0"><span>启用</span>
-                </label>
-                <label class="lyear-radio radio-inline radio-primary">
-                  <input type="radio" name="status" value="1"><span>禁用</span>
-                </label>
-              </div>
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-          <button type="button" id="sureBtn" class="btn btn-primary">确定</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <div class="row">
     <div class="col-lg-12">
       <div class="card">
@@ -187,7 +112,7 @@
         }
 
         $('#table').bootstrapTable({
-            url: '/api/user',                                     // 通过url 获取数据
+            url: '/api/laboratory',                                     // 通过url 获取数据
             showRefresh: true,                                    // 是否刷新按钮
             sortStable: true,                                      // 是否支持排序
             cache: false,                                          // 是否使用缓存
@@ -199,14 +124,14 @@
             pageSize: 10,
             pageList: [10, 20, 30],//可选择单页记录数
             onCheck: function (row) {
-                if (contains(row.userId)) {
-                    idData.push(row.userId);
+                if (contains(row.id)) {
+                    idData.push(row.id);
                 }
                 console.log(idData)
             },
             onUncheck: function (row) {
                 idData.forEach((item, index, arr) => {
-                    if (item === row.userId) {
+                    if (item === row.id) {
                         arr.splice(index, 1);
                     }
                 })
@@ -215,7 +140,7 @@
             onCheckAll: function (rows) {
                 idData.splice(0, idData.length);
                 for (let i = 0; i < rows.length; i++) {
-                    idData.push(rows[i].userId);
+                    idData.push(rows[i].id);
                 }
                 console.log(idData);
             },
@@ -229,25 +154,31 @@
                 valign: 'middle',
                 checkbox: true,
             }, {
-                field: 'userId',
+                field: 'id',
                 align: 'center',
                 valign: 'middle',
                 title: '编号'
             }, {
-                field: 'loginName',
-                title: '账号'
+                field: 'image',
+                title: '照片'
             }, {
-                field: 'userName',
-                title: '用户名'
+                field: 'laboratoryName',
+                title: '名称'
             }, {
-                field: 'email',
-                title: '邮箱'
+                field: 'deptName',
+                title: '所属部门'
             }, {
-                field: 'phonenumber',
-                title: '手机号'
+                field: 'capacity',
+                title: '容纳人数'
             }, {
-                field: 'sex',
-                title: '性别'
+                field: 'target',
+                title: '实验类型'
+            }, {
+                field: 'useType',
+                title: '教室性质'
+            }, {
+                field: 'admin',
+                title: '创建人'
             }, {
                 field: 'status',
                 title: '状态'
@@ -261,22 +192,19 @@
                     'click #edit': function (e, value, row, index) {
                         $('#exampleModal').on('show.bs.modal', function (event) {
                             var modal = $(this)
-                            modal.find('.modal-title').text('编辑：' + row.userName);
-                            modal.find('#userId').val(row.userId)
-                            modal.find('#loginName').val(row.loginName)
-                            modal.find('#userName').val(row.userName)
-                            modal.find('#email').val(row.email)
-                            modal.find('#sex').val(row.sex)
-                            modal.find('#phonenumber').val(row.phonenumber)
+                            modal.find('.modal-title').text('编辑：' + row.laboratoryName);
+                            modal.find('#id').val(row.id)
+                            modal.find('#laboratoryName').val(row.laboratoryName)
+                            modal.find('#capacity').val(row.capacity)
+                            modal.find('#target').val(row.target)
                             modal.find('#status').val(row.status)
                         })
                         $('#exampleModal').modal();
                         $('#updateBtn').click(() => {
                             let form = $("#updateForm").serializeObject();
-                            form['userId'] = row.userId;
-                            form['loginName'] = row.loginName;
+                            form['id'] = row.id;
                             console.log(form);
-                            axios.put('/api/user', form).then(res => {
+                            axios.put('/api/laboratory', form).then(res => {
                                 lightyear.notify(res.data, 'success', 100);
                                 $('#exampleModal').modal('hide');
                             }).catch(err => {
@@ -285,7 +213,7 @@
                         })
                     },
                     'click #delete': function (e, value, row, index) {
-                        axios.delete('/api/user/' + row.userId)
+                        axios.delete('/api/laboratory/' + row.id)
                             .then(res => {
                                 lightyear.notify(res.data, 'success', 100);
                             }).catch(err => {
@@ -318,7 +246,7 @@
                 }
 
                 let json = getStatusJson('0', idData);
-                axios.patch('/api/user', json).then(res => {
+                axios.patch('/api/laboratory', json).then(res => {
                     idData = [];
                     lightyear.notify('启用成功', 'success', 100);
                 }).catch(err => {
@@ -334,7 +262,7 @@
 
                 let json = getStatusJson('1', idData);
                 console.log(json);
-                axios.patch('/api/user', json).then(res => {
+                axios.patch('/api/laboratory', json).then(res => {
                     idData = [];
                     lightyear.notify('禁用成功', 'success', 100);
                 }).catch(err => {
@@ -350,7 +278,7 @@
                 }
                 axios({
                     method: 'delete',
-                    url: '/api/user',
+                    url: '/api/laboratory',
                     data: idData
                 }).then(res => {
                     idData = [];

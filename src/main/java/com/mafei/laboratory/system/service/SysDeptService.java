@@ -1,5 +1,7 @@
 package com.mafei.laboratory.system.service;
 
+import com.mafei.laboratory.system.entity.SysDept;
+
 import java.util.List;
 
 /**
@@ -9,5 +11,5 @@ import java.util.List;
  * @since 2021-03-10 08:48:29
  */
 public interface SysDeptService {
-
+    List<SysDept> findAll();
 }

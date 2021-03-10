@@ -24,14 +24,11 @@
               </div>
             </div>
             <div class="form-group col-md-12">
-              <label class="col-xs-12" for="example-select">所属学院</label>
+              <label class="col-xs-12" for="example-select">所属组织</label>
               <div class="col-xs-5">
                 <select class="form-control" id="example-select" name="depotId" size="1">
-                  <option value="0">理学院</option>
-                  <option value="1">大数据学院</option>
-                  <option value="2">化工学院</option>
-                  <option value="3">土木学院</option>
-                  <option value="4">土木学院</option>
+                  <option th:each="depot : ${depots}" th:value="${depot.deptId}" th:text="${depot.deptName}">理学院
+                  </option>
                 </select>
               </div>
             </div>
@@ -125,8 +122,21 @@
 
         $('#addBtn').click(() => {
             let form = $('#importData').serializeObject();
-            form['image'] = '/images/upload' + image;
+            form['image'] = '/images/upload/' + image;
+            if (form.depotId === '') {
+                lightyear.notify('请先选择组织', 'warning', 100);
+                return;
+            }
+            if (form.laboratoryName === '') {
+                lightyear.notify('必须填写实验室名称', 'warning', 100);
+                return;
+            }
             console.log(form);
+            axios.post('/api/laboratory', form).then(res => {
+                lightyear.notify(res.data, 'success', 100);
+            }).catch(err => {
+                lightyear.notify(err.response.data.message, 'danger', 100);
+            })
         })
     })
 </script>

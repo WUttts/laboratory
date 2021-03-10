@@ -3,19 +3,15 @@ package com.mafei.laboratory.system.entity;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Date;
 
 /**
  * 实验室信息表
- * @author wts
  */
 @Entity
 @Table(name = "sys_laboratory")
 @Data
-public class SysLaboratory implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class SysLaboratory {
 
     /**
      * 实验室ID
@@ -56,7 +52,7 @@ public class SysLaboratory implements Serializable {
     private String target;
 
     /**
-     * 用途类型（0理论教室 1综合教室 3实验教室）
+     * 用途类型（0理论教室 1综合教室 2实验教室）
      */
     @Column(name = "use_type")
     private String useType;
@@ -66,6 +62,12 @@ public class SysLaboratory implements Serializable {
      */
     @Column(name = "status")
     private String status;
+
+    /**
+     * 照片
+     */
+    @Column(name = "image")
+    private String image;
 
     /**
      * 权限标识

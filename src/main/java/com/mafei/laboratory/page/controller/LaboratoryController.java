@@ -1,9 +1,15 @@
 package com.mafei.laboratory.page.controller;
 
+import com.mafei.laboratory.system.entity.SysDept;
+import com.mafei.laboratory.system.service.SysDeptService;
+import com.mafei.laboratory.system.service.SysLaboratoryService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 /**
  * @author wutangsheng
@@ -13,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/laboratory")
 public class LaboratoryController {
+    @Autowired
+    private SysDeptService deptService;
 
     private final String prefix = "laboratory";
 
@@ -23,7 +31,8 @@ public class LaboratoryController {
 
     @GetMapping("/import")
     public String importData(Model model) {
-
+        List<SysDept> all = deptService.findAll();
+        model.addAttribute("depots", all);
         return prefix + "/import";
     }
 

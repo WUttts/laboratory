@@ -12,7 +12,7 @@ import javax.annotation.Resource;
  * @since 2021-03-08 18:48:26
  */
 @RestController
-@RequestMapping("sysDept")
+@RequestMapping("api/dept")
 public class SysDeptController {
 
 }
