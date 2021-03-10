@@ -1,8 +1,10 @@
 package com.mafei.laboratory.commons.utils;
 
+import com.mafei.laboratory.commons.exception.BadRequestException;
 import com.mafei.laboratory.commons.security.TokenProperties;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
+import org.springframework.http.HttpStatus;
 
 import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
@@ -52,7 +54,7 @@ public class JwtUtils {
                     .parseClaimsJws(token);
 
         } catch (JwtException e) {
-            e.printStackTrace();
+            throw new BadRequestException(HttpStatus.FORBIDDEN, "token失效，请重新登录");
         }
         return jws.getBody();
     }
