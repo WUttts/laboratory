@@ -1,0 +1,69 @@
+package com.mafei.laboratory.system.entity;
+
+import lombok.Data;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Date;
+
+/**
+ * 设备借用表
+ */
+@Entity
+@Table(name = "sys_borrow_instrument")
+@Data
+public class SysBorrowInstrument implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * 仪器id
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Long id;
+
+    @Column(name = "user_id", nullable = false)
+    private Long userId;
+
+    @Column(name = "instrument_id", nullable = false)
+    private Long instrumentId;
+
+    /**
+     * 0未归还，1已归还
+     */
+    @Column(name = "status")
+    private String status;
+
+    /**
+     * 备注
+     */
+    @Column(name = "comment")
+    private String comment;
+
+    /**
+     * 创建者
+     */
+    @Column(name = "create_by")
+    private String createBy;
+
+    /**
+     * 借用时间
+     */
+    @Column(name = "create_time")
+    private Date createTime;
+
+    /**
+     * 更新者
+     */
+    @Column(name = "update_by")
+    private String updateBy;
+
+    /**
+     * 归还时间
+     */
+    @Column(name = "update_time")
+    private Date updateTime;
+
+}
