@@ -43,6 +43,12 @@ public interface SysInstrumentRepository extends JpaRepository<SysInstrument, Lo
      */
     SysInstrument findByStatus(String status);
 
+    /**
+     * 查询全部
+     * @return
+     */
+    @Override
+    List<SysInstrument> findAll();
 
     /**
      * 查询多个

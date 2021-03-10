@@ -58,7 +58,7 @@
 
 </div>
 
-<div th:include="include :: table"></div>
+<th:block th:include="include :: table"/>
 <!--日期选择插件-->
 <script th:src="@{/js/bootstrap-datepicker/bootstrap-datepicker.min.js}"></script>
 <script th:src="@{js/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js}"></script>
@@ -91,15 +91,9 @@
             return obj;
         }
 
-        function getStatusJson(status, ids) {
-            let data = {};
-            data.status = status;
-            data.ids = ids;
-            return data
-        }
 
         $('#table').bootstrapTable({
-            url: '/api/user',                                     // 通过url 获取数据
+            url: '/api/instrument',                                     // 通过url 获取数据
             showRefresh: true,                                    // 是否刷新按钮
             sortStable: true,                                      // 是否支持排序
             cache: false,                                          // 是否使用缓存
@@ -111,14 +105,14 @@
             pageSize: 10,
             pageList: [10, 20, 30],//可选择单页记录数
             onCheck: function (row) {
-                if (contains(row.userId)) {
-                    idData.push(row.userId);
+                if (contains(row.id)) {
+                    idData.push(row.id);
                 }
                 console.log(idData)
             },
             onUncheck: function (row) {
                 idData.forEach((item, index, arr) => {
-                    if (item === row.userId) {
+                    if (item === row.id) {
                         arr.splice(index, 1);
                     }
                 })
@@ -127,7 +121,7 @@
             onCheckAll: function (rows) {
                 idData.splice(0, idData.length);
                 for (let i = 0; i < rows.length; i++) {
-                    idData.push(rows[i].userId);
+                    idData.push(rows[i].id);
                 }
                 console.log(idData);
             },
@@ -141,25 +135,25 @@
                 valign: 'middle',
                 checkbox: true,
             }, {
-                field: 'userId',
+                field: 'id',
                 align: 'center',
                 valign: 'middle',
                 title: '编号'
             }, {
-                field: 'loginName',
-                title: '账号'
+                field: 'instrumentName',
+                title: '名称'
             }, {
-                field: 'userName',
-                title: '用户名'
+                field: 'model',
+                title: '型号'
             }, {
-                field: 'email',
-                title: '邮箱'
+                field: 'type',
+                title: '类型'
             }, {
-                field: 'phonenumber',
-                title: '手机号'
+                field: 'price',
+                title: '价格'
             }, {
-                field: 'sex',
-                title: '性别'
+                field: 'createBy',
+                title: '创建人'
             }, {
                 field: 'status',
                 title: '状态'

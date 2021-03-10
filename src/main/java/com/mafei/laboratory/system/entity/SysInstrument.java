@@ -41,7 +41,7 @@ public class SysInstrument implements Serializable {
     private String model;
 
     /**
-     * 类型（0常规设备 1购入设备 2捐赠设备）
+     * 类型（0常规设备 1自制设备 2捐赠设备）
      */
     @Column(name = "type")
     private String type;

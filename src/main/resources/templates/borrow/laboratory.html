@@ -99,7 +99,7 @@
         }
 
         $('#table').bootstrapTable({
-            url: '/api/user',                                     // 通过url 获取数据
+            url: '/api/laboratory',                                     // 通过url 获取数据
             showRefresh: true,                                    // 是否刷新按钮
             sortStable: true,                                      // 是否支持排序
             cache: false,                                          // 是否使用缓存
@@ -111,14 +111,14 @@
             pageSize: 10,
             pageList: [10, 20, 30],//可选择单页记录数
             onCheck: function (row) {
-                if (contains(row.userId)) {
-                    idData.push(row.userId);
+                if (contains(row.id)) {
+                    idData.push(row.id);
                 }
                 console.log(idData)
             },
             onUncheck: function (row) {
                 idData.forEach((item, index, arr) => {
-                    if (item === row.userId) {
+                    if (item === row.id) {
                         arr.splice(index, 1);
                     }
                 })
@@ -127,7 +127,7 @@
             onCheckAll: function (rows) {
                 idData.splice(0, idData.length);
                 for (let i = 0; i < rows.length; i++) {
-                    idData.push(rows[i].userId);
+                    idData.push(rows[i].id);
                 }
                 console.log(idData);
             },
@@ -141,30 +141,24 @@
                 valign: 'middle',
                 checkbox: true,
             }, {
-                field: 'userId',
+                field: 'id',
                 align: 'center',
                 valign: 'middle',
                 title: '编号'
             }, {
-                field: 'loginName',
-                title: '账号'
+                field: 'image',
+                title: '照片'
             }, {
-                field: 'userName',
-                title: '用户名'
+                field: 'laboratoryName',
+                title: '名称'
             }, {
-                field: 'email',
-                title: '邮箱'
+                field: 'capacity',
+                title: '容纳人数'
             }, {
-                field: 'phonenumber',
-                title: '手机号'
-            }, {
-                field: 'sex',
-                title: '性别'
-            }, {
-                field: 'status',
-                title: '状态'
+                field: 'target',
+                title: '实验类型'
             }]
-        })
+        });
     });
 </script>
 </body>
