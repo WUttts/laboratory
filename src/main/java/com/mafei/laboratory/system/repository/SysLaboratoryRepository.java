@@ -74,4 +74,13 @@ public interface SysLaboratoryRepository extends JpaRepository<SysLaboratory, Lo
     @Query(value = "delete from sys_laboratory where id in ?1", nativeQuery = true)
     void deleteByIds(Set<Long> ids);
 
+    /**
+     * 获取名字
+     *
+     * @param id
+     * @return
+     */
+    @Query(value = "select ilaboratory_name from sys_laboratory where id = ?1", nativeQuery = true)
+    String getName(Long id);
+
 }

@@ -2,12 +2,15 @@ package com.mafei.laboratory.system.service.impl;
 
 import com.mafei.laboratory.system.entity.SysInstrument;
 import com.mafei.laboratory.system.entity.vo.InstrumentVo;
+import com.mafei.laboratory.system.repository.SysBorrowInstrumentRepository;
+import com.mafei.laboratory.system.repository.SysInstrumentRepairRepository;
 import com.mafei.laboratory.system.repository.SysInstrumentRepository;
 import com.mafei.laboratory.system.service.SysInstrumentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -22,10 +25,25 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class SysInstrumentServiceImpl implements SysInstrumentService {
     private final SysInstrumentRepository instrumentRepository;
+    private final SysInstrumentRepairRepository repairRepository;
+    private final SysBorrowInstrumentRepository borrowRepository;
 
     @Override
     public List<SysInstrument> findAll() {
         return instrumentRepository.findAll();
+    }
+
+    @Override
+    public List<SysInstrument> findAllRepair() {
+        List<Long> repairList = repairRepository.findInstrumentId();
+        List<Long> borrowList = borrowRepository.findInstrumentId();
+        HashSet<Long> set = new HashSet<>(repairList.size() + borrowList.size());
+        set.addAll(repairList);
+        set.addAll(borrowList);
+        if (set.size() == 0) {
+            return instrumentRepository.findAll();
+        }
+        return instrumentRepository.queryByIds(set);
     }
 
     @Override

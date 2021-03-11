@@ -8,6 +8,7 @@ import java.util.Date;
 
 /**
  * 仪器用途表
+ * @author wts
  */
 @Entity
 @Table(name = "sys_instrument_use")

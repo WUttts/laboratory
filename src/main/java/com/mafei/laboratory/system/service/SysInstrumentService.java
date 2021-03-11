@@ -24,6 +24,13 @@ public interface SysInstrumentService {
     List<SysInstrument> findAll();
 
     /**
+     * 查询全部
+     *
+     * @return
+     */
+    List<SysInstrument> findAllRepair();
+
+    /**
      * 根据 状态 查询
      * @param ids
      * @return

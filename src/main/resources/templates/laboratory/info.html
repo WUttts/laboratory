@@ -74,7 +74,7 @@
     </div>
   </div>
 </div>
-<div th:include="include :: table"></div>
+<th:block th:include="include :: table"/>
 <script type="text/javascript">
     $(function () {
         var idData = [];
@@ -158,9 +158,6 @@
                 align: 'center',
                 valign: 'middle',
                 title: '编号'
-            }, {
-                field: 'image',
-                title: '照片'
             }, {
                 field: 'laboratoryName',
                 title: '名称'

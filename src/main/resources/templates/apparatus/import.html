@@ -13,33 +13,40 @@
   <div class="row">
     <div class="col-lg-6 col-md-6">
       <div class="card" style="height: 60rem;">
-        <div class="card-header"><h4>预约信息</h4></div>
+        <div class="card-header"><h4>维修信息</h4></div>
         <div class="card-body">
-          <form class="row">
+          <form class="row" id="addForm">
             <div class="form-group col-md-12 col-lg-12">
-              <label for="startDate">选择借用时间</label>
+              <label for="createTime">选择维修时间</label>
               <input class="form-control js-datepicker m-b-10"
-                     type="text" id="startDate" name="example-datepicker"
-                     placeholder="yyyy-mm-dd" value="" data-date-format="yyyy-mm-dd"/>
+                     type="text" id="createTime" name="createTime"
+                     placeholder="输入维修时间" value="" data-date-format="yyyy-mm-dd"/>
             </div>
             <div class="form-group col-md-12 col-lg-12">
-              <label for="endDate">预计归还时间</label>
+              <label for="updateTime">预计维修完成时间</label>
               <input class="form-control js-datepicker m-b-10"
-                     type="text" id="endDate" name="example-datepicker"
-                     placeholder="yyyy-mm-dd" value="" data-date-format="yyyy-mm-dd"/>
+                     type="text" id="updateTime" name="updateTime"
+                     placeholder="输入完成时间" value="" data-date-format="yyyy-mm-dd"/>
             </div>
             <div class="form-group col-md-12 col-lg-12">
-              <label for="seo_description">借用原因</label>
-              <textarea class="form-control" id="seo_description" name="seo_description" rows="5" value=""
+              <label for="repairPosition" class="control-label">维修地点：</label>
+              <input type="text" name="repairPosition" class="form-control" id="repairPosition">
+            </div>
+            <div class="form-group col-md-12 col-lg-12">
+              <label for="price">维修价格：</label>
+              <input class="form-control" type="number" id="price" name="price" placeholder="输入维修价格"/>
+            </div>
+            <div class="form-group col-md-12 col-lg-12">
+              <label for="comment">维修原因</label>
+              <textarea class="form-control" id="comment" name="comment" rows="5" value=""
                         placeholder="描述"></textarea>
             </div>
             <div class="form-group col-md-12 col-lg-12">
-              <button type="button" class="btn btn-primary ajax-post" target-form="add-form">确 定</button>
+              <button type="button" class="btn btn-primary ajax-post" id="addBtn">确 定</button>
               <button type="button" class="btn btn-default">返 回
               </button>
             </div>
           </form>
-
         </div>
       </div>
     </div>
@@ -99,7 +106,7 @@
         }
 
         $('#table').bootstrapTable({
-            url: '/api/laboratory',                                     // 通过url 获取数据
+            url: '/api/instrument/repair',                                     // 通过url 获取数据
             showRefresh: true,                                    // 是否刷新按钮
             sortStable: true,                                      // 是否支持排序
             cache: false,                                          // 是否使用缓存
@@ -146,19 +153,42 @@
                 valign: 'middle',
                 title: '编号'
             }, {
-                field: 'image',
-                title: '照片'
-            }, {
-                field: 'laboratoryName',
+                field: 'instrumentName',
                 title: '名称'
             }, {
-                field: 'capacity',
-                title: '容纳人数'
+                field: 'model',
+                title: '型号'
             }, {
-                field: 'target',
-                title: '实验类型'
+                field: 'type',
+                title: '类型'
+            }, {
+                field: 'price',
+                title: '价格'
             }]
-        });
+        }),
+            $('#addBtn').click(() => {
+                if (idData.length === 0) {
+                    lightyear.notify('请先选择要维修的设备', 'danger', 100);
+                    return;
+                }
+                if (idData.length > 1) {
+                    lightyear.notify('只能选择1个设备', 'danger', 100);
+                    return;
+                }
+                let form = $("#addForm").serializeObject();
+                console.log(form);
+                if (form.createTime > form.updateTime) {
+                    lightyear.notify('预计维修完成时间需大于或等于维修时间', 'danger', 100);
+                    return;
+                }
+                form['instrumentId'] = idData[0];
+                console.log(form);
+                axios.post('/api/repair', form).then(res => {
+                    lightyear.notify(res.data, 'success', 100);
+                }).catch(err => {
+                    lightyear.notify(err.response.data.message, 'danger', 100);
+                })
+            });
     });
 </script>
 </body>

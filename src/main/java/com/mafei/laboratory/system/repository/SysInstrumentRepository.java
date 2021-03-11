@@ -45,6 +45,7 @@ public interface SysInstrumentRepository extends JpaRepository<SysInstrument, Lo
 
     /**
      * 查询全部
+     *
      * @return
      */
     @Override
@@ -56,7 +57,7 @@ public interface SysInstrumentRepository extends JpaRepository<SysInstrument, Lo
      * @param ids
      * @return
      */
-    @Query(value = "SELECT * FROM sys_instrumentn WHERE id in ?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM sys_instrument WHERE id not in ?1", nativeQuery = true)
     List<SysInstrument> queryByIds(Set<Long> ids);
 
     /**
@@ -65,6 +66,26 @@ public interface SysInstrumentRepository extends JpaRepository<SysInstrument, Lo
      * @param ids
      */
     @Modifying
-    @Query(value = "delete from sys_instrumentn where id in ?1", nativeQuery = true)
+    @Query(value = "delete from sys_instrument where id in ?1", nativeQuery = true)
     void deleteByIds(Set<Long> ids);
+
+
+    /**
+     * 修改邮箱
+     *
+     * @param id
+     * @param status
+     */
+    @Modifying
+    @Query(value = "update sys_instrument set status = ?2 where id = ?1", nativeQuery = true)
+    void updateStatus(Long id, String status);
+
+    /**
+     * 获取名字
+     *
+     * @param id
+     * @return
+     */
+    @Query(value = "select instrument_name from sys_instrument where id = ?1", nativeQuery = true)
+    String getName(Long id);
 }

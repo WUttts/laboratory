@@ -28,6 +28,11 @@ public class SysInstrumentController {
         return ResponseEntity.ok(instrumentService.findAll());
     }
 
+    @GetMapping("/repair")
+    public ResponseEntity<Object> findAllRepair() {
+        return ResponseEntity.ok(instrumentService.findAllRepair());
+    }
+
     @PostMapping
     public ResponseEntity<Object> addOne(@RequestBody InstrumentVo instrumentVo) {
         instrumentService.insert(instrumentVo);

@@ -60,4 +60,14 @@ public interface SysInstrumentPositionRepository extends JpaRepository<SysInstru
     @Modifying
     @Query(value = "delete from sys_instrument_position where id in ?1", nativeQuery = true)
     void deleteByIds(Set<Long> ids);
+
+    /**
+     * 获取名字
+     *
+     * @param id
+     * @return
+     */
+    @Query(value = "select a.instrument_name from sys_instrument a,sys_instrument_position b where b.id = ?1" +
+            " and b.instrument_id = a.id", nativeQuery = true)
+    String getName(Long id);
 }

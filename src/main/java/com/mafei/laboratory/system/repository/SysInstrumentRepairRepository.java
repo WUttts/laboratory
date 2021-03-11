@@ -60,4 +60,29 @@ public interface SysInstrumentRepairRepository extends JpaRepository<SysInstrume
     @Modifying
     @Query(value = "delete from sys_instrument_repair where id in ?1", nativeQuery = true)
     void deleteByIds(Set<Long> ids);
+
+    /**
+     * 获取名字
+     *
+     * @param id
+     * @return
+     */
+    @Query(value = "select a.instrument_name from sys_instrument a,sys_instrument_repair b where b.id = ?1" +
+            " and b.instrument_id = a.id", nativeQuery = true)
+    String getName(Long id);
+
+    /**
+     * 计数
+     *
+     * @param id
+     * @return
+     */
+    Integer countByInstrumentId(Long id);
+
+    /**
+     * 查找id
+     * @return
+     */
+    @Query(value = "select instrument_id from sys_instrument_repair",nativeQuery = true)
+    List<Long> findInstrumentId();
 }

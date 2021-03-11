@@ -81,6 +81,13 @@
               <input type="text" name="instrumentName" id="instrumentName" class="form-control">
             </div>
             <div class="form-group">
+              <label class="control-label" for="select">所属组织</label>
+              <select class="form-control" id="select" name="depotId" size="1">
+                <option th:each="depot : ${depots}" th:value="${depot.deptId}" th:text="${depot.deptName}">理学院
+                </option>
+              </select>
+            </div>
+            <div class="form-group">
               <label for="model" class="control-label">型号：</label>
               <input type="text" name="model" id="model" class="form-control">
             </div>
@@ -120,13 +127,97 @@
       </div>
     </div>
   </div>
+  <div class="modal fade" id="addPositionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+              aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title" id="addPositionLabel">新增位置</h4>
+        </div>
+        <div class="modal-body">
+          <form id="addPositionForm">
+            <div class="form-group">
+              <label for="instrumentId" class="control-label">设备id：</label>
+              <input type="text" name="instrumentId" id="instrumentId" class="form-control" disabled="disabled">
+            </div>
+            <div class="form-group">
+              <label for="position" class="control-label">位置：</label>
+              <input type="text" name="position" id="position" class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="detailNumber" class="control-label">储位：</label>
+              <input type="number" name="detailNumber" id="detailNumber" class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="comment">备注</label>
+              <textarea class="form-control" id="comment" name="comment" rows="5" value=""
+                        placeholder="描述"></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+          <button type="button" id="surePositionBtn" class="btn btn-primary">确定</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="addUseModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+              aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title" id="addUseLabel">新增用途</h4>
+        </div>
+        <div class="modal-body">
+          <form id="addUseForm">
+            <div class="form-group">
+              <label for="instrumentId" class="control-label">设备id：</label>
+              <input type="text" name="instrumentId" id="uinstrumentId" class="form-control" disabled="disabled">
+            </div>
+            <div class="form-group">
+              <label for="useTitle" class="control-label">用途名称：</label>
+              <input type="text" name="useTitle" id="useTitle" class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="example-select">类别：</label>
+              <div>
+                <select class="form-control" id="example-select" name="type" size="1">
+                  <option th:each="type : ${types}" th:value="${type.type}" th:text="${type.value}">test
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="useDesc">用途描述</label>
+              <textarea class="form-control" id="useDesc" name="useDesc" rows="5" value=""
+                        placeholder="描述"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="comment">备注</label>
+              <textarea class="form-control" id="ucomment" name="comment" rows="5" value=""
+                        placeholder="描述"></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+          <button type="button" id="sureUseBtn" class="btn btn-primary">确定</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div class="row">
     <div class="col-lg-12">
       <div class="card">
         <div class="card-toolbar clearfix">
           <div class="toolbar-btn-action">
-            <a class="btn btn-primary m-r-5" href="#!" id="addBtn"><i class="mdi mdi-plus"></i> 新增</a>
+            <a class="btn btn-primary m-r-5" href="#!" id="addBtn"><i class="mdi mdi-plus"></i> 新增设备</a>
             <a class="btn btn-success m-r-5" href="#!" id="enableBtn"><i class="mdi mdi-check"></i> 启用</a>
             <a class="btn btn-warning m-r-5" href="#!" id="disableBtn"><i class="mdi mdi-block-helper"></i> 禁用</a>
             <a class="btn btn-danger" href="#!" id="delBtn"><i class="mdi mdi-window-close"></i> 删除</a>
@@ -244,7 +335,19 @@
                 title: '创建人'
             }, {
                 field: 'status',
-                title: '状态'
+                title: '状态',
+                formatter: function (value, row, index) {
+                    if (row.status === '0') {
+                        return '<span class="label label-success">正常</span>'
+                    }
+                    if (row.status === '1') {
+                        return '<span class="label label-danger">废弃</span>'
+                    }
+                    if (row.status === '2') {
+                        return '<span class="label label-info">维修中</span>'
+                    }
+                    return '<span class="label label-purple">借用中</span>';
+                }
             }, {
                 field: 'operate',
                 title: '操作',
@@ -282,12 +385,51 @@
                             }).catch(err => {
                             lightyear.notify(err.response, 'danger', 100);
                         });
+                    },
+                    'click #addPosition': function (e, value, row, index) {
+                        $('#addPositionModal').on('show.bs.modal', function (event) {
+                            var modal = $(this)
+                            modal.find('.modal-title').text('编辑：' + row.instrumentName);
+                            modal.find('#instrumentId').val(row.id)
+                        })
+                        $('#addPositionModal').modal();
+                        $('#surePositionBtn').click(() => {
+                            let form = $("#addPositionForm").serializeObject();
+                            form['instrumentId'] = row.id;
+                            console.log(form);
+                            axios.post('/api/position', form).then(res => {
+                                lightyear.notify(res.data, 'success', 100);
+                                $('#addPositionModal').modal('hide');
+                            }).catch(err => {
+                                lightyear.notify(err.response.data.message, 'danger', 100);
+                            })
+                        });
+                    },
+                    'click #addUse': function (e, value, row, index) {
+                        $('#addUseModal').on('show.bs.modal', function (event) {
+                            var modal = $(this)
+                            modal.find('.modal-title').text('编辑：' + row.instrumentName);
+                            modal.find('#uinstrumentId').val(row.id)
+                        })
+                        $('#addUseModal').modal();
+                        $('#sureUseBtn').click(() => {
+                            let form = $("#addUseForm").serializeObject();
+                            form['instrumentId'] = row.id;
+                            console.log(form);
+                            axios.post('/api/use', form).then(res => {
+                                lightyear.notify(res.data, 'success', 100);
+                                $('#addUseModal').modal('hide');
+                            }).catch(err => {
+                                lightyear.notify(err.response.data.message, 'danger', 100);
+                            })
+                        });
                     }
                 },
                 formatter: function (value, row, index) {
                     let result = "";
+                    result += '<a class="btn btn-purple btn-xs" href="#!" id="addPosition" title="新增位置"><i class="mdi mdi-map-marker"></i> </a> ';
+                    result += '<a class="btn btn-brown btn-xs" href="#!" id="addUse" title="新增用途"><i class="mdi mdi-math-compass"></i></a> ';
                     result += '<a class="btn btn-xs btn-default" id="edit" href="#!" title="编辑" ><i class="mdi mdi-pencil"></i></a>';
-                    result += '<a class="btn btn-xs btn-default" id="view" href="#!" title="查看" ><i class="mdi mdi-eye"></i></a>';
                     result += '<a class="btn btn-xs btn-default" id="delete" href="#!" title="删除"><i class="mdi mdi-window-close"></i></a>';
                     return result;
                 }

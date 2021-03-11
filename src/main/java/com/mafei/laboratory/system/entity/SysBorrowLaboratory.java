@@ -3,18 +3,16 @@ package com.mafei.laboratory.system.entity;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Date;
 
 /**
  * 设备借用表
+ * @author wts
  */
 @Entity
 @Data
 @Table(name = "sys_borrow_laboratory")
-public class SysBorrowLaboratory implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class SysBorrowLaboratory {
 
     /**
      * 仪器id
@@ -35,6 +33,12 @@ public class SysBorrowLaboratory implements Serializable {
      */
     @Column(name = "status")
     private String status;
+
+    /**
+     * 0未归还，1已归还
+     */
+    @Column(name = "borrow_status")
+    private String borrowStatus;
 
     /**
      * 备注
