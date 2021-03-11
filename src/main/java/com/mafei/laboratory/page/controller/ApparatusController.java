@@ -4,6 +4,7 @@ import com.mafei.laboratory.commons.enums.TypeEnum;
 import com.mafei.laboratory.page.vo.TypeVo;
 import com.mafei.laboratory.system.entity.SysDept;
 import com.mafei.laboratory.system.service.SysDeptService;
+import com.mafei.laboratory.system.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +23,8 @@ import java.util.List;
 @RequestMapping("/apparatus")
 public class ApparatusController {
     private final String prefix = "apparatus";
+    @Autowired
+    private SysUserService userService;
 
     @Autowired
     private SysDeptService deptService;

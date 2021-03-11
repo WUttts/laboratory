@@ -35,15 +35,7 @@ public class SysInstrumentServiceImpl implements SysInstrumentService {
 
     @Override
     public List<SysInstrument> findAllRepair() {
-        List<Long> repairList = repairRepository.findInstrumentId();
-        List<Long> borrowList = borrowRepository.findInstrumentId();
-        HashSet<Long> set = new HashSet<>(repairList.size() + borrowList.size());
-        set.addAll(repairList);
-        set.addAll(borrowList);
-        if (set.size() == 0) {
-            return instrumentRepository.findAll();
-        }
-        return instrumentRepository.queryByIds(set);
+        return instrumentRepository.queryByStatus();
     }
 
     @Override

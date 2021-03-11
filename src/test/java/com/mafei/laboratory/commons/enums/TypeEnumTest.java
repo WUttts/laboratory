@@ -14,9 +14,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class TypeEnumTest {
     @Test
     void test() {
-        for (TypeEnum type : TypeEnum.values()) {
-            System.out.println(type);
-        }
+        StatusEnum statusEnum = StatusEnum.valueOf("2");
+        System.out.println(statusEnum);
     }
 
 }

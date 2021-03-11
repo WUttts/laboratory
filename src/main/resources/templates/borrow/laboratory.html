@@ -15,26 +15,26 @@
       <div class="card" style="height: 60rem;">
         <div class="card-header"><h4>预约信息</h4></div>
         <div class="card-body">
-          <form class="row">
+          <form class="row" id="addForm">
             <div class="form-group col-md-12 col-lg-12">
-              <label for="startDate">选择借用时间</label>
+              <label for="createTime">选择预约时间</label>
               <input class="form-control js-datepicker m-b-10"
-                     type="text" id="startDate" name="example-datepicker"
+                     type="text" id="createTime" name="createTime"
                      placeholder="yyyy-mm-dd" value="" data-date-format="yyyy-mm-dd"/>
             </div>
             <div class="form-group col-md-12 col-lg-12">
-              <label for="endDate">预计归还时间</label>
+              <label for="updateTime">预计归还时间</label>
               <input class="form-control js-datepicker m-b-10"
-                     type="text" id="endDate" name="example-datepicker"
+                     type="text" id="updateTime" name="updateTime"
                      placeholder="yyyy-mm-dd" value="" data-date-format="yyyy-mm-dd"/>
             </div>
             <div class="form-group col-md-12 col-lg-12">
-              <label for="seo_description">借用原因</label>
-              <textarea class="form-control" id="seo_description" name="seo_description" rows="5" value=""
+              <label for="comment">预约原因</label>
+              <textarea class="form-control" id="comment" name="comment" rows="5" value=""
                         placeholder="描述"></textarea>
             </div>
             <div class="form-group col-md-12 col-lg-12">
-              <button type="button" class="btn btn-primary ajax-post" target-form="add-form">确 定</button>
+              <button type="button" class="btn btn-primary ajax-post" id="addBtn">确 定</button>
               <button type="button" class="btn btn-default">返 回
               </button>
             </div>
@@ -45,7 +45,7 @@
     </div>
     <div class="col-lg-6 col-md-6">
       <div class="card">
-        <div class="card-header"><h4>实验室信息</h4></div>
+        <div class="card-header"><h4>设备信息</h4></div>
         <div class="card-body">
           <div class="table-responsive">
             <!-- 表格数据 -->
@@ -62,9 +62,10 @@
 <!--日期选择插件-->
 <script th:src="@{/js/bootstrap-datepicker/bootstrap-datepicker.min.js}"></script>
 <script th:src="@{js/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js}"></script>
-<script type="text/javascript">
+<script th:inline="javascript" type="text/javascript">
     $(function () {
         var idData = [];
+        const userId = [[${userId}]];
 
         function contains(id) {
             for (let datum of idData) {
@@ -91,15 +92,9 @@
             return obj;
         }
 
-        function getStatusJson(status, ids) {
-            let data = {};
-            data.status = status;
-            data.ids = ids;
-            return data
-        }
 
         $('#table').bootstrapTable({
-            url: '/api/laboratory',                                     // 通过url 获取数据
+            url: '/api/laboratory/status',                                     // 通过url 获取数据
             showRefresh: true,                                    // 是否刷新按钮
             sortStable: true,                                      // 是否支持排序
             cache: false,                                          // 是否使用缓存
@@ -159,6 +154,40 @@
                 title: '实验类型'
             }]
         });
+        $('#addBtn').click(() => {
+            if (idData.length === 0) {
+                lightyear.notify('请先选择要预约的实验室', 'danger', 100);
+                return;
+            }
+            if (idData.length > 1) {
+                lightyear.notify('一次只能选择1个实验室', 'danger', 100);
+                return;
+            }
+            let form = $("#addForm").serializeObject();
+            if (form.createTime === '' || form.createTime === undefined) {
+                lightyear.notify('请先选择预约时间', 'danger', 100);
+                return;
+            }
+            if (form.updateTime === '' || form.updateTime === undefined) {
+                lightyear.notify('请先选择归还时间', 'danger', 100);
+                return;
+            }
+            if (form.createTime > form.updateTime) {
+                lightyear.notify('归还时间需大于或等于借用时间', 'danger', 100);
+                return;
+            }
+            form['laboratoryId'] = idData[0];
+            form['userId'] = userId;
+            form['borrowStatus'] = '5';
+            form['status'] = '1';
+            console.log(form);
+            axios.post('/api/borrow/laboratory', form).then(res => {
+                lightyear.notify(res.data, 'success', 100);
+            }).catch(err => {
+                lightyear.notify(err.response.data.message, 'danger', 100);
+            })
+        });
+
     });
 </script>
 </body>

@@ -7,6 +7,7 @@ import java.util.Date;
 
 /**
  * 设备借用表
+ *
  * @author wts
  */
 @Entity
@@ -29,13 +30,13 @@ public class SysBorrowInstrument {
     private Long instrumentId;
 
     /**
-     * 0已审核，1未审核
+     * 0已审核，1未审核，2驳回,3已归还
      */
     @Column(name = "status")
     private String status;
 
     /**
-     * 0未归还，1已归还
+     * 0未归还，1异常，8归还,3取消，4被驳回，5待审核,6成功
      */
     @Column(name = "borrow_status")
     private String borrowStatus;

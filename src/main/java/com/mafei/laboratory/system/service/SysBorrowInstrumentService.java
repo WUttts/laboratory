@@ -2,6 +2,7 @@ package com.mafei.laboratory.system.service;
 
 import com.mafei.laboratory.system.entity.SysBorrowInstrument;
 import com.mafei.laboratory.system.entity.vo.BorrowInstrumentVo;
+import com.mafei.laboratory.system.service.dto.UpdateDto;
 
 import java.util.List;
 import java.util.Set;
@@ -21,11 +22,12 @@ public interface SysBorrowInstrumentService {
     List<BorrowInstrumentVo> findAll();
 
     /**
-     * 其他用户查询全部
+     * 用户查询单据
      *
+     * @param userId
      * @return
      */
-    List<BorrowInstrumentVo> findAllByOther();
+    List<BorrowInstrumentVo> findAllByUserId(Long userId);
 
     /**
      * 根据 状态 查询
@@ -53,15 +55,33 @@ public interface SysBorrowInstrumentService {
 
     /**
      * 归还
+     *
      * @param status
      * @param id
      */
     void updateBorrow(String status, Long id);
 
     /**
-     * 审核
+     * 批量归还
+     *
      * @param status
      * @param id
      */
-    void updateCheck(String status, Long id);
+    void updateBorrow(String status, Set<Long> id);
+
+
+    /**
+     * 审核
+     *
+     * @param updateDto
+     */
+    void updateCheck(UpdateDto updateDto);
+
+    /**
+     * 批量审核
+     *
+     * @param status
+     * @param id
+     */
+    void updateCheck(String status, Set<Long> id);
 }

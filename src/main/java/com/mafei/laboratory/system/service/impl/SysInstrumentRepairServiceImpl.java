@@ -3,7 +3,6 @@ package com.mafei.laboratory.system.service.impl;
 import com.mafei.laboratory.commons.enums.StatusEnum;
 import com.mafei.laboratory.commons.utils.DateUtils;
 import com.mafei.laboratory.system.entity.SysInstrumentRepair;
-import com.mafei.laboratory.system.entity.SysUser;
 import com.mafei.laboratory.system.entity.vo.RepairVo;
 import com.mafei.laboratory.system.repository.SysInstrumentRepairRepository;
 import com.mafei.laboratory.system.repository.SysInstrumentRepository;

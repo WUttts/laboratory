@@ -28,6 +28,7 @@ public interface SysLaboratoryService {
      */
     List<SysLaboratory> findAllByStatus();
 
+
     /**
      * 通过ID查询单条数据
      *

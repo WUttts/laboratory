@@ -1,6 +1,7 @@
 package com.mafei.laboratory.system.repository;
 
 import com.mafei.laboratory.system.entity.SysBorrowLaboratory;
+import com.mafei.laboratory.system.entity.vo.BorrowLaboratoryVo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
@@ -34,21 +35,26 @@ public interface SysBorrowLaboratoryRepository extends JpaRepository<SysBorrowLa
     SysBorrowLaboratory findByStatus(String status);
 
     /**
-     * 查询全部
+     * 根据用户查询
      *
+     * @param userId
      * @return
      */
-    @Override
-    @Query(value = "select * from sys_borrow_laboratory order by borrow_status,create_time desc", nativeQuery = true)
-    List<SysBorrowLaboratory> findAll();
+    @Query(value = "select distinct * from sys_borrow_laboratory where user_id =?1 and borrow_status in ('3','4','5','7')" +
+            " order by borrow_status desc,create_time desc", nativeQuery = true)
+    List<SysBorrowLaboratory> findByUserId(Long userId);
 
     /**
      * 查询全部
      *
      * @return
      */
-    @Query(value = "select * from sys_borrow_laboratory order by status,create_time desc", nativeQuery = true)
-    List<SysBorrowLaboratory> findAllByStatus();
+    @Query(value = "select new com.mafei.laboratory.system.entity.vo.BorrowLaboratoryVo(" +
+            "a.id,a.userId,a.laboratoryId,b.userName,a.status,a.borrowStatus,a.comment,a.createTime,c.laboratoryName) " +
+            " from SysBorrowLaboratory as a,SysUser as b,SysLaboratory as c " +
+            " where a.userId = b.userId and a.laboratoryId = c.id and a.status in ('7','1','4','5') " +
+            " order by a.status desc ,a.createTime desc")
+    List<BorrowLaboratoryVo> myFindAll();
 
 
     /**
@@ -58,7 +64,7 @@ public interface SysBorrowLaboratoryRepository extends JpaRepository<SysBorrowLa
      * @return
      */
     @Query(value = "SELECT * FROM sys_borrow_laboratory WHERE id not in ?1", nativeQuery = true)
-    List<SysBorrowLaboratory> queryByIds(List<Long> ids);
+    List<SysBorrowLaboratory> queryByIds(Set<Long> ids);
 
 
     /**

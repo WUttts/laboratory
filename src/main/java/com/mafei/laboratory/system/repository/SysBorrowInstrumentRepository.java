@@ -2,6 +2,7 @@ package com.mafei.laboratory.system.repository;
 
 import com.mafei.laboratory.system.entity.SysBorrowInstrument;
 import com.mafei.laboratory.system.entity.SysBorrowInstrument;
+import com.mafei.laboratory.system.entity.vo.BorrowInstrumentVo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
@@ -36,21 +37,26 @@ public interface SysBorrowInstrumentRepository extends JpaRepository<SysBorrowIn
     SysBorrowInstrument findByStatus(String status);
 
     /**
-     * 查询全部
+     * 根据用户查询
      *
+     * @param userId
      * @return
      */
-    @Override
-    @Query(value = "select * from sys_borrow_instrument order by borrow_status,create_time desc", nativeQuery = true)
-    List<SysBorrowInstrument> findAll();
+    @Query(value = "select distinct * from sys_borrow_instrument where user_id =?1 and borrow_status in ('3','4','5','7')" +
+            " order by borrow_status desc,create_time desc", nativeQuery = true)
+    List<SysBorrowInstrument> findByUserId(Long userId);
 
     /**
      * 查询全部
      *
      * @return
      */
-    @Query(value = "select * from sys_borrow_instrument order by status,create_time desc", nativeQuery = true)
-    List<SysBorrowInstrument> findAllByStatus();
+    @Query(value = "select new com.mafei.laboratory.system.entity.vo.BorrowInstrumentVo( " +
+            "a.id,a.userId,a.instrumentId,b.userName,c.instrumentName,a.status,a.borrowStatus,a.comment,a.createTime) " +
+            " from SysBorrowInstrument as a,SysUser as b,SysInstrument as c " +
+            " where a.userId = b.userId and a.instrumentId = c.id and a.status in ('7','1','4','5') " +
+            " order by a.status,a.createTime desc")
+    List<BorrowInstrumentVo> myFindAll();
 
 
     /**
@@ -59,8 +65,8 @@ public interface SysBorrowInstrumentRepository extends JpaRepository<SysBorrowIn
      * @param ids
      * @return
      */
-    @Query(value = "SELECT * FROM sys_borrow_instrument WHERE id not in ?1", nativeQuery = true)
-    List<SysBorrowInstrument> queryByIds(List<Long> ids);
+    @Query(value = "SELECT * FROM sys_borrow_instrument WHERE id in ?1", nativeQuery = true)
+    List<SysBorrowInstrument> queryByIds(Set<Long> ids);
 
 
     /**

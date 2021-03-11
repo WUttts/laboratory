@@ -80,7 +80,17 @@ public interface SysLaboratoryRepository extends JpaRepository<SysLaboratory, Lo
      * @param id
      * @return
      */
-    @Query(value = "select ilaboratory_name from sys_laboratory where id = ?1", nativeQuery = true)
+    @Query(value = "select laboratory_name from sys_laboratory where id = ?1", nativeQuery = true)
     String getName(Long id);
+
+    /**
+     * 修改状态
+     *
+     * @param id
+     * @param status
+     */
+    @Modifying
+    @Query(value = "update sys_instrument set status = ?2 where id = ?1", nativeQuery = true)
+    void updateStatus(Long id, String status);
 
 }

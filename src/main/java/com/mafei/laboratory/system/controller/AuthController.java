@@ -3,8 +3,12 @@ package com.mafei.laboratory.system.controller;
 import com.mafei.laboratory.commons.exception.BadRequestException;
 import com.mafei.laboratory.commons.utils.JwtUtils;
 import com.mafei.laboratory.system.entity.vo.LoginUserVo;
+import com.mafei.laboratory.system.service.SysBorrowInstrumentService;
+import com.mafei.laboratory.system.service.SysBorrowLaboratoryService;
 import com.mafei.laboratory.system.service.SysUserService;
 import com.mafei.laboratory.system.service.dto.LoginDto;
+import com.mafei.laboratory.system.service.dto.UpdateDto;
+import com.mafei.laboratory.system.service.dto.UpdateStatusDto;
 import com.wf.captcha.ArithmeticCaptcha;
 import com.wf.captcha.utils.CaptchaUtil;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author wutangsheng
@@ -31,6 +36,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class AuthController {
     private final SysUserService userService;
+    private final SysBorrowInstrumentService instrumentService;
+    private final SysBorrowLaboratoryService laboratoryService;
 
     private String verCode;
 
@@ -71,4 +78,29 @@ public class AuthController {
         this.verCode = captcha.text().toLowerCase();
         CaptchaUtil.out(captcha, request, response);
     }
+
+    @PatchMapping("/instrument/{id}")
+    public ResponseEntity<Object> checkInstrument(@RequestBody UpdateDto updateDto) {
+        instrumentService.updateCheck(updateDto);
+        return ResponseEntity.ok("success");
+    }
+
+    @PatchMapping("/instrument")
+    public ResponseEntity<Object> checkInstrument(String status, Set<Long> ids) {
+        instrumentService.updateCheck(status, ids);
+        return ResponseEntity.ok("success");
+    }
+
+    @PatchMapping("/laboratory/{id}")
+    public ResponseEntity<Object> checkLaboratory(@RequestBody UpdateDto updateDto) {
+        laboratoryService.updateCheck(updateDto);
+        return ResponseEntity.ok("success");
+    }
+
+    @PatchMapping("/laboratory")
+    public ResponseEntity<Object> checkLaboratory(String status, Set<Long> ids) {
+        laboratoryService.updateCheck(status, ids);
+        return ResponseEntity.ok("success");
+    }
+
 }

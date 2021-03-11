@@ -36,14 +36,6 @@ public interface SysInstrumentRepository extends JpaRepository<SysInstrument, Lo
     Optional<SysInstrument> findById(Long id);
 
     /**
-     * 根据status查询
-     *
-     * @param status
-     * @return
-     */
-    SysInstrument findByStatus(String status);
-
-    /**
      * 查询全部
      *
      * @return
@@ -54,10 +46,18 @@ public interface SysInstrumentRepository extends JpaRepository<SysInstrument, Lo
     /**
      * 查询多个
      *
+     * @return
+     */
+    @Query(value = "SELECT * FROM sys_instrument WHERE status = '0'", nativeQuery = true)
+    List<SysInstrument> queryByStatus();
+
+    /**
+     * 查询多个
+     *
      * @param ids
      * @return
      */
-    @Query(value = "SELECT * FROM sys_instrument WHERE id not in ?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM sys_instrument WHERE id in ?1", nativeQuery = true)
     List<SysInstrument> queryByIds(Set<Long> ids);
 
     /**
@@ -71,7 +71,7 @@ public interface SysInstrumentRepository extends JpaRepository<SysInstrument, Lo
 
 
     /**
-     * 修改邮箱
+     * 修改状态
      *
      * @param id
      * @param status

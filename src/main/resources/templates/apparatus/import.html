@@ -52,7 +52,7 @@
     </div>
     <div class="col-lg-6 col-md-6">
       <div class="card">
-        <div class="card-header"><h4>实验室信息</h4></div>
+        <div class="card-header"><h4>设备信息</h4></div>
         <div class="card-body">
           <div class="table-responsive">
             <!-- 表格数据 -->
@@ -165,30 +165,30 @@
                 field: 'price',
                 title: '价格'
             }]
-        }),
-            $('#addBtn').click(() => {
-                if (idData.length === 0) {
-                    lightyear.notify('请先选择要维修的设备', 'danger', 100);
-                    return;
-                }
-                if (idData.length > 1) {
-                    lightyear.notify('只能选择1个设备', 'danger', 100);
-                    return;
-                }
-                let form = $("#addForm").serializeObject();
-                console.log(form);
-                if (form.createTime > form.updateTime) {
-                    lightyear.notify('预计维修完成时间需大于或等于维修时间', 'danger', 100);
-                    return;
-                }
-                form['instrumentId'] = idData[0];
-                console.log(form);
-                axios.post('/api/repair', form).then(res => {
-                    lightyear.notify(res.data, 'success', 100);
-                }).catch(err => {
-                    lightyear.notify(err.response.data.message, 'danger', 100);
-                })
-            });
+        });
+        $('#addBtn').click(() => {
+            if (idData.length === 0) {
+                lightyear.notify('请先选择要维修的设备', 'danger', 100);
+                return;
+            }
+            if (idData.length > 1) {
+                lightyear.notify('只能选择1个设备', 'danger', 100);
+                return;
+            }
+            let form = $("#addForm").serializeObject();
+            console.log(form);
+            if (form.createTime > form.updateTime) {
+                lightyear.notify('预计维修完成时间需大于或等于维修时间', 'danger', 100);
+                return;
+            }
+            form['instrumentId'] = idData[0];
+            console.log(form);
+            axios.post('/api/repair', form).then(res => {
+                lightyear.notify(res.data, 'success', 100);
+            }).catch(err => {
+                lightyear.notify(err.response.data.message, 'danger', 100);
+            })
+        });
     });
 </script>
 </body>

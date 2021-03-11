@@ -10,12 +10,22 @@ public enum StatusEnum {
     NORMAL("0", "正常"),
 
     //弃用状态
-    DEPRECATED("1", "弃用"),
+    DEPRECATED("1", "异常"),
 
     //维修状态
     REPAIR("2", "维修中"),
 
-    BORROW("3", "已借出");
+    CANCELLED("3", "已取消"),
+
+    REJECT("4", "驳回"),
+
+    CHECK("5", "审核中"),
+
+    SUCCESS("6", "成功"),
+
+    BORROW("7", "使用中"),
+
+    RETURN("8", "归还");
 
     private String status;
     private String desc;

@@ -15,26 +15,26 @@
       <div class="card" style="height: 60rem;">
         <div class="card-header"><h4>借用信息</h4></div>
         <div class="card-body">
-          <form class="row">
+          <form class="row" id="addForm">
             <div class="form-group col-md-12 col-lg-12">
-              <label for="startDate">选择借用时间</label>
+              <label for="createTime">选择借用时间</label>
               <input class="form-control js-datepicker m-b-10"
-                     type="text" id="startDate" name="example-datepicker"
+                     type="text" id="createTime" name="createTime"
                      placeholder="yyyy-mm-dd" value="" data-date-format="yyyy-mm-dd"/>
             </div>
             <div class="form-group col-md-12 col-lg-12">
-              <label for="endDate">预计归还时间</label>
+              <label for="updateTime">预计归还时间</label>
               <input class="form-control js-datepicker m-b-10"
-                     type="text" id="endDate" name="example-datepicker"
+                     type="text" id="updateTime" name="updateTime"
                      placeholder="yyyy-mm-dd" value="" data-date-format="yyyy-mm-dd"/>
             </div>
             <div class="form-group col-md-12 col-lg-12">
-              <label for="seo_description">借用原因</label>
-              <textarea class="form-control" id="seo_description" name="seo_description" rows="5" value=""
+              <label for="comment">借用原因</label>
+              <textarea class="form-control" id="comment" name="comment" rows="5" value=""
                         placeholder="描述"></textarea>
             </div>
             <div class="form-group col-md-12 col-lg-12">
-              <button type="button" class="btn btn-primary ajax-post" target-form="add-form">确 定</button>
+              <button type="button" class="btn btn-primary ajax-post" id="addBtn">确 定</button>
               <button type="button" class="btn btn-default">返 回
               </button>
             </div>
@@ -59,12 +59,13 @@
 </div>
 
 <th:block th:include="include :: table"/>
-<!--日期选择插件-->
+<! --日期选择插件-- >
 <script th:src="@{/js/bootstrap-datepicker/bootstrap-datepicker.min.js}"></script>
 <script th:src="@{js/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js}"></script>
-<script type="text/javascript">
+<script th:inline="javascript" type="text/javascript">
     $(function () {
         var idData = [];
+        const userId = [[${userId}]];
 
         function contains(id) {
             for (let datum of idData) {
@@ -93,7 +94,7 @@
 
 
         $('#table').bootstrapTable({
-            url: '/api/instrument',                                     // 通过url 获取数据
+            url: '/api/instrument/repair',                                     // 通过url 获取数据
             showRefresh: true,                                    // 是否刷新按钮
             sortStable: true,                                      // 是否支持排序
             cache: false,                                          // 是否使用缓存
@@ -146,19 +147,47 @@
                 field: 'model',
                 title: '型号'
             }, {
-                field: 'type',
-                title: '类型'
-            }, {
-                field: 'price',
-                title: '价格'
-            }, {
-                field: 'createBy',
-                title: '创建人'
-            }, {
                 field: 'status',
-                title: '状态'
+                title: '状态',
+                formatter: function (value, row, index) {
+                    return '<span class="label label-success">空闲</span>';
+                }
             }]
-        })
+        });
+        $('#addBtn').click(() => {
+            if (idData.length === 0) {
+                lightyear.notify('请先选择要借用的设备', 'danger', 100);
+                return;
+            }
+            if (idData.length > 1) {
+                lightyear.notify('一次只能选择1个设备', 'danger', 100);
+                return;
+            }
+            let form = $("#addForm").serializeObject();
+            if (form.createTime === '' || form.createTime === undefined) {
+                lightyear.notify('请先选择借用时间', 'danger', 100);
+                return;
+            }
+            if (form.updateTime === '' || form.updateTime === undefined) {
+                lightyear.notify('请先选择归还时间', 'danger', 100);
+                return;
+            }
+            if (form.createTime > form.updateTime) {
+                lightyear.notify('归还时间需大于或等于借用时间', 'danger', 100);
+                return;
+            }
+            form['instrumentId'] = idData[0];
+            form['userId'] = userId;
+            form['borrowStatus'] = '5';
+            form['status'] = '1';
+            console.log(form);
+            axios.post('/api/borrow/instrument', form).then(res => {
+                lightyear.notify(res.data, 'success', 100);
+            }).catch(err => {
+                lightyear.notify(err.response.data.message, 'danger', 100);
+            })
+        });
+
     });
 </script>
 </body>
